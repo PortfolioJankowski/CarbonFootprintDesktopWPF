@@ -8,14 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Design\Fonts\" />
-    <Folder Include="Design\" />
-    <Folder Include="Design\Styles\" />
-    <Folder Include="Design\Utilities\" />
     <Folder Include="Design\Resources\" />
-    <Folder Include="Model\" />
-    <Folder Include="ViewModel\" />
-    <Folder Include="View\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
   </ItemGroup>
 
 </Project>

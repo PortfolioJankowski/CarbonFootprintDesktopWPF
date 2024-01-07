@@ -4,6 +4,16 @@
              xmlns:local="clr-namespace:CarbonFootprintDesktopApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Design/Styles/Page.xaml" />
+                <ResourceDictionary Source="Design/Styles/Image.xaml" />
+                <ResourceDictionary Source="Design/Styles/Text.xaml" />
+                <ResourceDictionary Source="Design/Styles/Button.xaml" />
+                <ResourceDictionary Source="Utilities/DataTemplate.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
          
     </Application.Resources>
 </Application>
