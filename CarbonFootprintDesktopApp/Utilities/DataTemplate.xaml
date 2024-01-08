@@ -7,6 +7,10 @@
         <view:Home/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vm:ScopesVM}">
+        <view:Scope/>
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type vm:CategoriesVM}">
         <view:Categories/>
     </DataTemplate>

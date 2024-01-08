@@ -4,22 +4,94 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarbonFootprintDesktopApp"
+        xmlns:vm="clr-namespace:CarbonFootprintDesktopApp.ViewModel"
+        xmlns:Menu="clr-namespace:CarbonFootprintDesktopApp.Utilities"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="850"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         Background="Transparent">
+
+    <Window.DataContext>
+        <vm:NavigationVM/>
+    </Window.DataContext>
+
     <Grid>
-        <!--// Window Border //-->
+        <!--Window border-->
         <Border Background="#212529"
-                CornerRadius="20"/>
+                CornerRadius="20" />
         <Grid>
             <!-- Base Grid -->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="228" />
                 <ColumnDefinition Width="622" />
             </Grid.ColumnDefinitions>
+        
+
+           <!--Navbar-->
+            <Grid HorizontalAlignment="Left"
+              Width="228">
+                <Border Background="#272B2F"
+                        CornerRadius="20,0,0,20" />
+                <StackPanel Height="400"
+                       Width="228">
+
+                 <!--Home-->
+                    <Menu:Btn Style="{StaticResource BtnStyle}"
+                              Command="{Binding HomeCommand}"
+                              IsChecked="True">
+
+                        <Grid>
+                           
+
+                            <TextBlock Text="Home"
+                                       Style="{StaticResource Text_Style}"/>
+                        </Grid> 
+                    </Menu:Btn>
+
+                    <Menu:Btn Style="{StaticResource BtnStyle}"
+                              Command="{Binding ScopesCommnad}"
+                              IsChecked="False">
+
+                        <Grid>
+                            <TextBlock Text="Scopes"
+                                       Style="{StaticResource Text_Style}"/>
+                        </Grid>
+                        </Menu:Btn>
+
+
+
+
+
+
+                </StackPanel>
+                
+               
+            </Grid>
+
+            <!--Bindowanie drugiej kolumny z kontrolkami użytkownika-->
+            <Grid Grid.Column="1">
+                <ContentControl x:Name="Pages"
+                                Content="{Binding CurrentView}" />
+
+            </Grid>
         </Grid>
+        <Button x:Name="CloseApp"
+                Background="Transparent"
+                Margin="810,10,10,560"
+                Height="30"
+                Width="30"
+                Foreground="#DBDB"
+                FontFamily="Century Gothic"
+                FontSize="14"
+                FontWeight="Bold"
+                Content="X"
+                BorderBrush="Transparent" RenderTransformOrigin="1.067,1.4"
+                Click="CloseApp_Click"  />
+
     </Grid>
+        
+
+        
 </Window>

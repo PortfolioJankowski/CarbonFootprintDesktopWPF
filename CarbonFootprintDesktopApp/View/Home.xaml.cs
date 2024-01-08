@@ -17,11 +17,12 @@ namespace CarbonFootprintDesktopApp.View
     /// <summary>
     /// Logika interakcji dla klasy Home.xaml
     /// </summary>
-    public partial class Home : Window
+    public partial class Home : UserControl
     {
         public Home()
         {
             InitializeComponent();
         }
+   
     }
 }
