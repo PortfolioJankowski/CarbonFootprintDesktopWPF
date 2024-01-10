@@ -47,6 +47,13 @@
 
                             <TextBlock Text="Home"
                                        Style="{StaticResource Text_Style}"/>
+                            <Image Source="/Design/Images/home.png"
+                                   Stretch="Uniform"
+                                   Height="35"
+                                   Width="35"
+                                   Style="{StaticResource Image_Style}"
+                                   Visibility="Visible"
+                                   />
                         </Grid> 
                     </Menu:Btn>
 
@@ -56,7 +63,14 @@
 
                         <Grid>
                             <TextBlock Text="Scopes"
-                                       Style="{StaticResource Text_Style}"/>
+                                       Style="{StaticResource Text_Style}" />
+                            <Image Source="/Design/Images/scope.png"
+                                     Stretch="Uniform"
+                                     Height="35"
+                                     Width="35"
+                                     Style="{StaticResource Image_Style}"
+                                     Visibility="Visible"
+                                     />
                         </Grid>
                         </Menu:Btn>
 

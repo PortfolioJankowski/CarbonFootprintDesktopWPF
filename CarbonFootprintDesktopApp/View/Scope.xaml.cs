@@ -30,7 +30,6 @@ namespace CarbonFootprintDesktopApp.View
         public Scope()
         {
             InitializeComponent();
-            DataContext = new DoughnutChartViewModel();
         }   
     }
 }

@@ -21,7 +21,11 @@ namespace CarbonFootprintDesktopApp.ViewModel
         public double FirstScope
         {
             get { return firstScope; }
-            set { firstScope = GetScopeResult(1); }
+            set 
+            {
+                firstScope = value;
+                OnPropertyChanged("FirstScope"); 
+             }
         }
 
         private double secondScope;
@@ -29,7 +33,11 @@ namespace CarbonFootprintDesktopApp.ViewModel
         public double SecondScope
         {
             get { return secondScope; }
-            set { secondScope = GetScopeResult(2); }
+            set 
+            {
+                secondScope = value;
+                OnPropertyChanged("SecondScope");
+            }
         }
 
         private double thirdScope;
@@ -37,17 +45,23 @@ namespace CarbonFootprintDesktopApp.ViewModel
         public double ThirdScope
         {
             get { return thirdScope; }
-            set { thirdScope = GetScopeResult(3); }
+            set 
+            { 
+                thirdScope = value;
+                OnPropertyChanged("ThirdScope");
+            }
         }
 
         public ScopesVM()
-        { 
-            
+        {
+            SetValues();
         }
 
-        public double GetScopeResult(int number)
+        private void SetValues()
         {
-            return HelperDB.GetResult();
+            FirstScope = HelperDB.GetPieChartData("Scope 1");
+            SecondScope = HelperDB.GetPieChartData("Scope 2");
+            ThirdScope = HelperDB.GetPieChartData("Scope 3");
         }
 
     }
@@ -62,26 +76,21 @@ namespace CarbonFootprintDesktopApp.ViewModel
                 new PieSeries
                 {
                     Title = "Scope 1",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(8) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(HelperDB.GetPieChartData("Scope 1")) },
                     DataLabels = true
                 },
                 new PieSeries
                 {
                     Title = "Scope 2",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(6) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(HelperDB.GetPieChartData("Scope 2")) },
                     DataLabels = true
                 },
                 new PieSeries
                 {
                     Title = "Scope 3",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(10) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(HelperDB.GetPieChartData("Scope 3")) },
                     DataLabels = true
-                },
-                new PieSeries
-                {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(4) },
-                    DataLabels = true
-                }
+                }  
             };
         }
     }
