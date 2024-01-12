@@ -19,7 +19,6 @@ namespace CarbonFootprintDesktopApp.ViewModel.Commands
 
         public bool CanExecute(object? parameter)
         {
-            //TODO
             return true;
         }
 

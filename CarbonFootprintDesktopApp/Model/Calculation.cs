@@ -20,5 +20,6 @@ namespace CarbonFootprintDesktopApp.Model
         public double Usage { get; set; }
         public double Result { get; set; }
         public string Additional { get; set; }
+        public string Method { get; set; }
     }
 }

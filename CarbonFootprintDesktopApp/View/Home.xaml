@@ -67,7 +67,7 @@
                   Height="350" Grid.ColumnSpan="2">
             <ListView.View>
                 <GridView >
-                    <GridViewColumn Width="60">
+                    <GridViewColumn Width="50">
                         <GridViewColumn.Header>
                             <GridViewColumnHeader Foreground="#272B2F"  FontWeight="Bold" FontFamily="Century Gothic" Background="#272B2F">Year</GridViewColumnHeader>
                         </GridViewColumn.Header>
@@ -83,7 +83,7 @@
                             <Binding Path="Scope"/>
                         </GridViewColumn.DisplayMemberBinding>
                     </GridViewColumn>
-                    <GridViewColumn Width="70">
+                    <GridViewColumn Width="78">
                         <GridViewColumn.Header>
                             <GridViewColumnHeader Foreground="#272B2F"  FontWeight="Bold" FontFamily="Century Gothic" Background="#272B2F">Category</GridViewColumnHeader>
                         </GridViewColumn.Header>
@@ -91,7 +91,7 @@
                             <Binding Path="Category"/>
                         </GridViewColumn.DisplayMemberBinding>
                     </GridViewColumn>
-                    <GridViewColumn Width="70">
+                    <GridViewColumn Width="145">
                         <GridViewColumn.Header>
                             <GridViewColumnHeader Foreground="#272B2F"  FontWeight="Bold" FontFamily="Century Gothic" Background="#272B2F">Source</GridViewColumnHeader>
                         </GridViewColumn.Header>
@@ -107,7 +107,7 @@
                             <Binding Path="Location"/>
                         </GridViewColumn.DisplayMemberBinding>
                     </GridViewColumn>
-                    <GridViewColumn Width="40">
+                    <GridViewColumn Width="50">
                         <GridViewColumn.Header>
                             <GridViewColumnHeader Foreground="#272B2F"  FontWeight="Bold" FontFamily="Century Gothic" Background="#272B2F">Unit</GridViewColumnHeader>
                         </GridViewColumn.Header>
@@ -123,7 +123,7 @@
                             <Binding Path="Usage"/>
                         </GridViewColumn.DisplayMemberBinding>
                     </GridViewColumn>
-                    <GridViewColumn Width="102">
+                    <GridViewColumn Width="108">
                         <GridViewColumn.Header>
                             <GridViewColumnHeader Foreground="#272B2F"  FontWeight="Bold" FontFamily="Century Gothic" Background="#272B2F">Result [tCO2e]</GridViewColumnHeader>
                         </GridViewColumn.Header>
@@ -134,14 +134,18 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <TextBlock Text="Table contains market-based calculations"
+                   Margin=" 20,500,0,0"
+                   FontStyle="Italic"
+                   Foreground="#DBDBDB"/>
         <TextBlock Text="Total Carbon Footprint: "
-                   Margin="20,520,0,0"
-                   FontSize="14"
+                   Margin="20,530,0,0"
+                   FontSize="16"
                    Foreground="#DBDBDB"
                    FontFamily="Century Gothic"/>
         <DockPanel>
             <TextBlock Text="{Binding TotalResult, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                   Margin="30,540,0,0"
+                   Margin="30,545,0,0"
                    FontSize="32"
                    FontWeight="Bold"
                    Foreground="#DBDBDB"
@@ -151,7 +155,7 @@
                        FontSize="14"
                        Foreground="#DBDBDB"
                        FontFamily="Century Gothic"
-                       Margin="0,555,0,0"/>
+                       Margin="0,560,0,0"/>
         </DockPanel>
         <Button Content="Export"
                     Width="70"

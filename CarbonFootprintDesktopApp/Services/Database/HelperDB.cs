@@ -14,6 +14,10 @@ using static SQLite.TableMapping;
 
 namespace CarbonFootprintDesktopApp.Database
 {
+    public class ColumnResult
+    {
+        public string Column { get; set; }
+    }
     class HelperDB
     {
         //TODO generyczny insert/update/delete/read/
@@ -109,7 +113,8 @@ namespace CarbonFootprintDesktopApp.Database
                 ON E.Year = F.Year
                     AND E.[Emission Source] = F.Source  
                     AND E.Additional = F.Additional
-                    AND F.Unit = E.Unit;
+                    AND F.Unit = E.Unit
+            WHERE F.Method = 'Market';
                                                 ";
 
                 calculations = connection.Query<Calculation>(query);
@@ -136,6 +141,18 @@ namespace CarbonFootprintDesktopApp.Database
                     Console.WriteLine($"Error: {ex.Message}");
                     return 0;
                 }
+        }
+
+
+        public static List<Factor> GetEmissions() 
+        {
+            using (var cnn = new SQLite.SQLiteConnection(App.databasePath))
+            {
+                string sql = $@"SELECT * FROM Factors";
+                List<Factor> result = cnn.Query<Factor>(sql).ToList();
+                return result;
+            }
+
         }
     }
 }
