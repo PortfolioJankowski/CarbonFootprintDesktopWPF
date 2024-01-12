@@ -43,8 +43,6 @@
                               IsChecked="True">
 
                         <Grid>
-                           
-
                             <TextBlock Text="Home"
                                        Style="{StaticResource Text_Style}"/>
                             <Image Source="/Design/Images/home.png"
@@ -52,8 +50,7 @@
                                    Height="35"
                                    Width="35"
                                    Style="{StaticResource Image_Style}"
-                                   Visibility="Visible"
-                                   />
+                                   Visibility="Visible" />
                         </Grid> 
                     </Menu:Btn>
 
@@ -74,11 +71,6 @@
                         </Grid>
                         </Menu:Btn>
 
-
-
-
-
-
                 </StackPanel>
                 
                
@@ -92,18 +84,20 @@
             </Grid>
         </Grid>
         <Button x:Name="CloseApp"
-                Background="Transparent"
                 Margin="810,10,10,560"
-                Height="30"
-                Width="30"
+                Height="35"
+                Width="35"
                 Foreground="#DBDB"
                 FontFamily="Century Gothic"
                 FontSize="14"
                 FontWeight="Bold"
-                Content="X"
-                BorderBrush="Transparent" RenderTransformOrigin="1.067,1.4"
-                Click="CloseApp_Click"  />
-
+                Click="CloseApp_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/Design/Images/poweroff.png"
+                       Stretch="Fill"/>
+            </Button.Background>
+            
+        </Button>
     </Grid>
         
 

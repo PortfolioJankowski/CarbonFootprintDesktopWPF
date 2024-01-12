@@ -20,7 +20,7 @@
 
 
     <Grid>
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="118*"/>
             <ColumnDefinition Width="193*"/>
@@ -28,7 +28,7 @@
 
         <Border CornerRadius="0,20,20,0"/>
 
-        <DockPanel Margin="30,100,30,0"
+        <DockPanel Margin="9,100,0,0"
                    Height="40"
                    VerticalAlignment="Top" Grid.ColumnSpan="2">
             <Button Content="Add Emission"
@@ -37,21 +37,21 @@
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left"
                     Command="{Binding NewEmissionCommand}"
-                    Margin="10,0"/>
+                    Margin="17,0"/>
             <Button Content="Change Emission"
                     Height="30"
                     Width="120"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left"
                     Command="{Binding ChangeEmissionCommand}"
-                    Margin="10,0"/>
+                    Margin="17,0"/>
             <Button Content="Delete Emission"
                     Height="30"
                     Width="120"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left"
                     Command="{Binding DeleteEmissionCommand}"
-                    Margin="10,0"/>
+                    Margin="17,0"/>
             <Button Content="Import Emission"
                     Height="30"
                     Width="120"
@@ -134,16 +134,40 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <TextBlock Text="Total Carbon Footprint [t CO2e]: "
+        <TextBlock Text="Total Carbon Footprint: "
                    Margin="20,520,0,0"
                    FontSize="14"
                    Foreground="#DBDBDB"
                    FontFamily="Century Gothic"/>
-        <TextBlock Text="123"
+        <DockPanel>
+            <TextBlock Text="{Binding TotalResult, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                    Margin="30,540,0,0"
-                   FontSize="22"
+                   FontSize="32"
                    FontWeight="Bold"
-                   Foreground="#DBDBDB"/>
-
+                   Foreground="#DBDBDB"
+                    DockPanel.Dock="Left"/>
+            <TextBlock Text=" t CO2"
+                       DockPanel.Dock="Left"
+                       FontSize="14"
+                       Foreground="#DBDBDB"
+                       FontFamily="Century Gothic"
+                       Margin="0,555,0,0"/>
+        </DockPanel>
+        <Button Content="Export"
+                    Width="70"
+                    DockPanel.Dock="Left"
+                    VerticalAlignment="Bottom"
+                    Margin="215,0,0,14"
+                    Foreground="#DBDBDB"
+                    FontWeight="Bold"
+                    Background="PaleVioletRed" Grid.Column="1" HorizontalAlignment="Left"/>
+        <Button Content="Report"
+                    Width="70"
+                    DockPanel.Dock="Left"
+                    VerticalAlignment="Bottom"
+                    Margin="299,0,0,14"
+                    Foreground="#DBDBDB"
+                    FontWeight="Bold"
+                    Background="PaleVioletRed" Grid.Column="1" HorizontalAlignment="Left"/>
     </Grid>
 </UserControl>

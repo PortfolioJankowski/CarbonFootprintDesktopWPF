@@ -10,16 +10,33 @@ using System.Text;
 using System.Threading.Tasks;
 using static SQLite.SQLite3;
 using System.Windows.Controls.Primitives;
+using static SQLite.TableMapping;
 
 namespace CarbonFootprintDesktopApp.Database
 {
     class HelperDB
     {
         //TODO generyczny insert/update/delete/read/
-        //TODO calculate
+        
         public static double GetResult()
         {
-           return 0;
+            try
+            {
+                using (var cnn = new SQLite.SQLiteConnection(App.databasePath))
+                {
+                    string sqlQuery = $@"SELECT SUM(E.Usage* F.Value) as Result
+                                            FROM Emissions E
+                                            JOIN Factors F
+                                            ON E.Year = F.Year  AND E.[Emission Source] = F.Source  AND E.Additional = F.Additional AND F.Unit = E.Unit";
+                    var result = cnn.ExecuteScalar<double?>(sqlQuery);
+                    return (double)result;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return 0;
+            }
         }
 
         public static bool Insert<T>(T item)
