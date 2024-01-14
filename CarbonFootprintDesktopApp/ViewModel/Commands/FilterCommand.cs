@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace CarbonFootprintDesktopApp.ViewModel.Commands
-{   
-    public class AddEmissionCommand : ICommand
+{
+    public class FilterCommand : ICommand
     {
-        public EmissionViewModel VM { get; set; }
-        public AddEmissionCommand(EmissionViewModel vm)
+        HomeVM VM;
+
+        public FilterCommand(HomeVM vm)
         {
             VM = vm;
         }
-
         public event EventHandler? CanExecuteChanged;
 
         public bool CanExecute(object? parameter)
@@ -24,9 +24,7 @@ namespace CarbonFootprintDesktopApp.ViewModel.Commands
 
         public void Execute(object? parameter)
         {
-            //Walidacja czy wszystkie comboboxy są uzupełnione
-            VM.CreateEmission();
-            VM.CloseWindow?.Invoke(this, new EventArgs());
+            VM.Filter();
         }
     }
 }

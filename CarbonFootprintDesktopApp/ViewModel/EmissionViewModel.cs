@@ -52,6 +52,31 @@ namespace CarbonFootprintDesktopApp.ViewModel
             }
         }
 
+        private string location;
+
+        public string Location
+        {
+            get { return location; }
+            set
+            { 
+                location = value;
+                OnPropertyChanged("Location");
+                OnPropertyChanged("IsFormValid");
+            }
+        }
+
+        private string sector;
+
+        public string Sector
+        {
+            get { return sector; }
+            set 
+            { 
+                sector = value;
+                OnPropertyChanged("Sector");
+                OnPropertyChanged("IsFormValid");
+            }
+        }
 
         //deklaruje listy dla Comboboxów
         public List<string> Sources { get; set; }
@@ -89,7 +114,8 @@ namespace CarbonFootprintDesktopApp.ViewModel
 
         //guziczek
         public ICommand AddEmissionCommand { get; set; }
-
+        //do tego EventHandlera odwołam się w CodeBehind formy
+        public EventHandler CloseWindow;
         //gdy wybiorę źródło będę mógł wybrać jednostkę
         private bool isUnitEnabled;
         public bool IsUnitEnabled
@@ -112,17 +138,54 @@ namespace CarbonFootprintDesktopApp.ViewModel
             Years = HelperDB.GetEmissions().Select(e => e.Year).Distinct().ToList();
             Units = new List<string>();
             isUnitEnabled = false;
-            
         }
         
         public void CreateEmission()
         {
-            
+            //jeżeli jest energia elektryczna to dodaje 2x (w jednym przypadku dodaje z Additional, żeby zaznaczyć że będzie location)
+            if (selectedSource != "Purchased grid electricity")
+            {
+                HelperDB.Insert(new Emission
+                {
+                    Year = Year,
+                    Additional = "0",
+                    Location = Location,
+                    Sector = Sector,
+                    Unit = Unit,
+                    Usage = Usage,
+                    Source = SelectedSource,
+                });
+            }
+            else
+            {
+                HelperDB.Insert(new Emission
+                {
+                    Year = Year,
+                    Additional = "0",
+                    Location = Location,
+                    Sector = Sector,
+                    Unit = Unit,
+                    Usage = Usage,
+                    Source = SelectedSource,
+                });
+                HelperDB.Insert(new Emission
+                {
+                    Year = Year,
+                    Additional = Location,
+                    Location = Location,
+                    Sector = Sector,
+                    Unit = Unit,
+                    Usage = Usage,
+                    Source = SelectedSource,
+                });
+            }
+            CloseWindow?.Invoke(this, new EventArgs());
         }
 
         public bool Validate()
         {
-            if (Unit != null && SelectedSource != null && Usage != 0 && Year != null) 
+            //sprawdzam czy pola są wypełnione
+            if (Unit != null && SelectedSource != null && Usage != 0 && Year != null && Sector != null && Location != null) 
             {
                 return true;
             }

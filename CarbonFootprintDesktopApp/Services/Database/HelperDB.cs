@@ -90,33 +90,33 @@ namespace CarbonFootprintDesktopApp.Database
             return items;
         }
 
+        //zwracam kalkulacje do grida w HOME
         public static IEnumerable<Calculation> GetCalculations()
         {
             IEnumerable<Calculation> calculations;
             using(var connection = new SQLiteConnection(App.databasePath))
             {
                 var query = @"
-            SELECT
-            E.Year,
-            E.Sector,
-            E.Scope,
-            E.Category,
-            E.Additional,
-            E.[Emission Source] as Source, 
-            E.Location,
-            E.Unit,
-            E.Usage,
-            E.Usage * F.Value as Result
-            FROM    
-                Emissions E
-            JOIN Factors F 
-                ON E.Year = F.Year
-                    AND E.[Emission Source] = F.Source  
-                    AND E.Additional = F.Additional
-                    AND F.Unit = E.Unit
-            WHERE F.Method = 'Market';
-                                                ";
-
+                SELECT
+                E.Year,
+                E.Sector,
+                S.Scope,
+                S.Category,
+                E.[Emission Source] as Source, 
+                E.Location,
+                E.Unit,
+                E.Usage,
+                E.Usage * F.Value as Result
+                FROM    
+                    Emissions E
+                JOIN Factors F 
+                    ON E.Year = F.Year
+                        AND E.[Emission Source] = F.Source  
+                        AND E.Additional = F.Additional
+                        AND F.Unit = E.Unit
+                JOIN Scopes S
+	                ON F.Id = S.FactorsId
+                WHERE F.Method in ('Market','General')";
                 calculations = connection.Query<Calculation>(query);
                 return calculations;
             }
@@ -127,11 +127,14 @@ namespace CarbonFootprintDesktopApp.Database
             try {
                 using (var cnn = new SQLite.SQLiteConnection(App.databasePath))
                 {
-                    string sqlQuery = $@"SELECT SUM(E.Usage* F.Value) as Result
+                        string sqlQuery = $@"SELECT SUM(E.Usage * F.Value) as Result
                                             FROM Emissions E
-                                            JOIN Factors F
-                                            ON E.Year = F.Year  AND E.[Emission Source] = F.Source  AND E.Additional = F.Additional AND F.Unit = E.Unit
-                                            WHERE E.Scope = '{column}'";
+                                            JOIN Factors F ON E.Year = F.Year
+                                                           AND E.[Emission Source] = F.Source
+                                                           AND E.Additional = F.Additional
+                                                           AND F.Unit = E.Unit
+                                            JOIN Scopes S ON S.FactorsId = F.Id
+                                            WHERE S.Scope = '{column}' AND F.Method in ('Market', 'General');";
                     var result = cnn.ExecuteScalar<double?>(sqlQuery);
                     return (double)result;
                     }

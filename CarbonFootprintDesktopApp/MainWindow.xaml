@@ -84,14 +84,11 @@
             </Grid>
         </Grid>
         <Button x:Name="CloseApp"
-                Margin="810,10,10,560"
+                Margin="800,10,10,560"
                 Height="35"
                 Width="35"
-                Foreground="#DBDB"
-                FontFamily="Century Gothic"
-                FontSize="14"
-                FontWeight="Bold"
-                Click="CloseApp_Click">
+                Click="CloseApp_Click"
+                BorderBrush="Transparent">
             <Button.Background>
                 <ImageBrush ImageSource="/Design/Images/poweroff.png"
                        Stretch="Fill"/>

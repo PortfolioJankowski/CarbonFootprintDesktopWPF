@@ -59,7 +59,7 @@ namespace CarbonFootprintDesktopApp.ViewModel
 
         private void SetValues()
         {
-            FirstScope = HelperDB.GetPieChartData("Scope 1");
+            FirstScope = Convert.ToDouble(HelperDB.GetPieChartData("Scope 1"));
             SecondScope = HelperDB.GetPieChartData("Scope 2");
             ThirdScope = HelperDB.GetPieChartData("Scope 3");
         }

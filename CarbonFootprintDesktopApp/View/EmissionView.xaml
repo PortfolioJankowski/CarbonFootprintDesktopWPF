@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CarbonFootprintDesktopApp.View"
         xmlns:vm="clr-namespace:CarbonFootprintDesktopApp.ViewModel"
         mc:Ignorable="d"
-        Title="EmissionView" Height="260" Width="300"
+        Title="EmissionView" Height="210" Width="450"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
@@ -14,14 +14,27 @@
     <Window.DataContext>
         <vm:EmissionViewModel/>
     </Window.DataContext>
-    
+    <Window.Resources>
+        <ResourceDictionary>
+            <vm:EmissionViewModel x:Key="vm"/>
+        </ResourceDictionary>
+    </Window.Resources>
+
     <Grid>
         <Border Background="#F14747"
             BorderBrush="#DBDBDB"
             BorderThickness="1"
             CornerRadius="20,20,20,20">
 
-            <Grid>
+            <Grid Margin="25,0,-1,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="4*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                 <!-- Header -->
                 <TextBlock Foreground="#DBDBDB"
                        Text="Emission Form"
@@ -31,13 +44,13 @@
                        HorizontalAlignment="Left"/>
 
                 <!-- Form Content -->
-                <StackPanel Margin="20,50,20,10">
+                <StackPanel Margin="10,50,10,10" Grid.Column="0" Grid.Row="0">
 
                     <!-- Year -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Foreground="#DBDBDB" Text="Year" Width="80"/>
                         <ComboBox Margin="10,0,0,0"
-                                   Width="150"
+                                   Width="100"
                                    ItemsSource="{Binding Years, UpdateSourceTrigger=PropertyChanged}"
                                    SelectedItem="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
@@ -46,7 +59,7 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Foreground="#DBDBDB" Text="Emission Source" Width="85"/>
                         <ComboBox Margin="5,0,0,0"
-                                    Width="150"
+                                    Width="100"
                                     ItemsSource="{Binding Sources, UpdateSourceTrigger=PropertyChanged}"
                                     SelectedItem="{Binding SelectedSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
@@ -55,34 +68,50 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Foreground="#DBDBDB" Text="Unit" Width="80"/>
                         <ComboBox Margin="10,0,0,0"
-                                 Width="150"
+                                 Width="100"
                                   ItemsSource="{Binding Units, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding IsUnitEnabled, UpdateSourceTrigger=PropertyChanged}"
                                   SelectedItem="{Binding Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
-
+                </StackPanel>
+                
+                <StackPanel Margin="10,50,32,10" Grid.Column="1" Grid.Row="0">
                     <!-- Usage -->
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Foreground="#DBDBDB" Text="Usage" Width="80"/>
+                    <StackPanel Orientation="Horizontal"  Margin="0,0,0,10">
+                        <TextBlock Foreground="#DBDBDB" Text="Usage" Width="50"/>
                         <TextBox Margin="10,0,0,0"
-                                  Width="150"
+                                  Width="100"
                                   Text="{Binding Usage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
-                        <Button Width="40" Height="35" HorizontalAlignment="Center" Margin="85,0,0,0" BorderThickness="0" Command="{Binding AddEmissionCommand}" IsEnabled="{Binding IsFormValid, UpdateSourceTrigger=PropertyChanged}">
+                    <StackPanel Orientation="Horizontal"  Margin="0,0,0,10">
+                        <TextBlock Foreground="#DBDBDB" Text="Sector" Width="50"/>
+                                <TextBox Margin="10,0,0,0"
+                                  Width="100"
+                                  Text="{Binding Sector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"  Margin="0,0,0,10">
+                        <TextBlock Foreground="#DBDBDB" Text="Location" Width="50"/>
+                        <TextBox Margin="10,0,0,0"
+                                  Width="100"
+                                  Text="{Binding Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button Width="40" Height="35" BorderThickness="0" Command="{Binding AddEmissionCommand}" IsEnabled="{Binding IsFormValid, UpdateSourceTrigger=PropertyChanged}"
+                        Click="Button_Click"        
+                        Grid.Row="1"
+                                HorizontalAlignment="Right"
+                                Margin="0,0,0,0">
                             <Button.Background>
                                 <ImageBrush ImageSource="/Design/Images/add.png" />
                             </Button.Background>
                         </Button>
-                        <Button Width="40" Height="35" HorizontalAlignment="Center" Margin="10,0,0,0" BorderThickness="0" Click="Button_Click">
-                            <Button.Background>
-                                <ImageBrush ImageSource="/Design/Images/back.png" />
-                            </Button.Background>
-                        </Button>
-                    </StackPanel>
 
-                </StackPanel>
+                <Button Width="40" Height="35" HorizontalAlignment="Left" BorderThickness="0" Click="Button_Click" Grid.Column="1" Grid.Row="1" Margin="0,0,20,0">
+                        <Button.Background>
+                            <ImageBrush ImageSource="/Design/Images/back.png" />
+                        </Button.Background>
+                    </Button>
+               
             </Grid>
         </Border>
     </Grid>

@@ -33,46 +33,50 @@
                    Margin="75,85,0,0" />
         <TextBlock Text="Scope 1"
                    Foreground="#DBDBDB"
-                   FontSize="14"
+                   FontSize="16"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
-                   FontFamily="/Design/Fonts/#Rubik Medium"
-                   Margin="80,109,0,0" />
-        <TextBlock Text="{Binding FirstScope, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                   FontFamily="Century Gothic"
+                   Margin="80,106,0,0" />
+        <TextBlock Text="{Binding FirstScope, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=# ##0}"
                    Foreground="#DBDBDB"
-                   FontSize="14"
+                   FontSize="16"
+                   
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    FontFamily="/Design/Fonts/#Rubik Medium"
-                   Margin="160,109,0,0"/>
+                   Margin="160,106,0,0"/>
 
         <TextBlock Text="Scope 2"
            Foreground="#DBDBDB"
-           FontSize="14"
+           FontSize="16"
            HorizontalAlignment="Left"
            VerticalAlignment="Top"
-           FontFamily="/Design/Fonts/#Rubik Medium"
-           Margin="80,168,0,0" />
-        <TextBlock Text="{Binding SecondScope, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+           FontFamily="Century Gothic"
+           Margin="80,166,0,0"
+           FontWeight="Bold"/>
+        <TextBlock Text="{Binding SecondScope, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=# ##0}"
            Foreground="#DBDBDB"
-           FontSize="14"
+           FontSize="16"
            HorizontalAlignment="Left"
            VerticalAlignment="Top"
            FontFamily="/Design/Fonts/#Rubik Medium"
-           Margin="160,168,0,0"/>
+           Margin="160,166,0,0"
+           FontWeight="Bold"/>
 
         <TextBlock Text="Scope 3"
            Foreground="#DBDBDB"
-           FontSize="14"
+           FontSize="16"
            HorizontalAlignment="Left"
            VerticalAlignment="Top"
-           FontFamily="/Design/Fonts/#Rubik Medium"
+           FontFamily="Century Gothic"
            Margin="80,226,0,0" />
-        <TextBlock Text="{Binding ThirdScope, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+        <TextBlock Text="{Binding ThirdScope, Mode=OneWay,UpdateSourceTrigger=PropertyChanged, StringFormat=# ##0}"
            Foreground="#DBDBDB"
-           FontSize="14"
+           FontSize="16"
            HorizontalAlignment="Left"
            VerticalAlignment="Top"
+                   FontWeight="Bold"
            FontFamily="/Design/Fonts/#Rubik Medium"
            Margin="160,226,0,0"/>
 

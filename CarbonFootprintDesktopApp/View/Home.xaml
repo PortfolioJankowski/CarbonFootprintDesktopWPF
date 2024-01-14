@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CarbonFootprintDesktopApp.View"
              xmlns:vm="clr-namespace:CarbonFootprintDesktopApp.ViewModel"
-             xmlns:db="clr-namespace:CarbonFootprintDesktopApp.Database"
+             xmlns:db="clr-namespace:CarbonFootprintDesktopApp.Database"  
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="600" 
              d:DesignWidth="622"
@@ -13,10 +14,14 @@
     <UserControl.DataContext>
         <vm:HomeVM />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <vm:HomeVM x:Key="vm"/>
+    </UserControl.Resources>
     <UserControl.Background>
         <ImageBrush ImageSource="/Design/Images/home_page.png"
             Stretch="None" />
     </UserControl.Background>
+ 
 
 
     <Grid>
@@ -28,8 +33,8 @@
 
         <Border CornerRadius="0,20,20,0"/>
 
-        <DockPanel Margin="9,100,0,0"
-                   Height="40"
+        <DockPanel Margin="9,80,0,0"
+                   Height="30"
                    VerticalAlignment="Top" Grid.ColumnSpan="2">
             <Button Content="Add Emission"
                     Height="30"
@@ -60,11 +65,16 @@
                     Command="{Binding ImportEmissionCommand}"
                     Margin="10,0"/>
         </DockPanel>
-
-
-        <ListView ItemsSource="{Binding Calculations}"
-                    Margin="20,80,20,30"
-                  Height="350" Grid.ColumnSpan="2">
+        <TextBlock Text="Filter" FontFamily="Century Gothic" Foreground="#DBDBDB" Margin="210,135,-8,0" Grid.Column="1" />
+        <TextBox  Name="txtFilter" Text="{Binding FilteredText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="245,124,20,448" Grid.Column="1" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="KeyUp">
+                    <i:InvokeCommandAction Command="{Binding FilterCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </TextBox>
+        <ListView Name="calculationGrid"  ItemsSource="{Binding CalculationView,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
+                    Margin="20,157,20,100" Grid.ColumnSpan="2">
             <ListView.View>
                 <GridView >
                     <GridViewColumn Width="50">
@@ -144,7 +154,7 @@
                    Foreground="#DBDBDB"
                    FontFamily="Century Gothic"/>
         <DockPanel>
-            <TextBlock Text="{Binding TotalResult, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            <TextBlock Text="{Binding TotalResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                    Margin="30,545,0,0"
                    FontSize="32"
                    FontWeight="Bold"

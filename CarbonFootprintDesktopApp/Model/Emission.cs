@@ -16,8 +16,6 @@ namespace CarbonFootprintDesktopApp.Model
         public int Id { get; set; }
         public int Year { get; set; }
         public string Sector {  get; set; }
-        public string Scope { get; set; }
-        public string Category { get; set; }
         public string Additional { get; set; }
 
         [Column("Emission source")]
