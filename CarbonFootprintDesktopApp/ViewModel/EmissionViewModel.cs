@@ -143,44 +143,54 @@ namespace CarbonFootprintDesktopApp.ViewModel
         public void CreateEmission()
         {
             //jeżeli jest energia elektryczna to dodaje 2x (w jednym przypadku dodaje z Additional, żeby zaznaczyć że będzie location)
-            if (selectedSource != "Purchased grid electricity")
+            try
             {
-                HelperDB.Insert(new Emission
+                if (selectedSource != "Purchased grid electricity")
                 {
-                    Year = Year,
-                    Additional = "0",
-                    Location = Location,
-                    Sector = Sector,
-                    Unit = Unit,
-                    Usage = Usage,
-                    Source = SelectedSource,
-                });
+                    HelperDB.Insert(new Emission
+                    {
+                        Year = Year,
+                        Additional = "0",
+                        Location = Location,
+                        Sector = Sector,
+                        Unit = Unit,
+                        Usage = Usage,
+                        Source = SelectedSource,
+                    });
+                }
+                else
+                {
+                    HelperDB.Insert(new Emission
+                    {
+                        Year = Year,
+                        Additional = "0",
+                        Location = Location,
+                        Sector = Sector,
+                        Unit = Unit,
+                        Usage = Usage,
+                        Source = SelectedSource,
+                    });
+                    HelperDB.Insert(new Emission
+                    {
+                        Year = Year,
+                        Additional = Location,
+                        Location = Location,
+                        Sector = Sector,
+                        Unit = Unit,
+                        Usage = Usage,
+                        Source = SelectedSource,
+                    });
+                }
+                CloseWindow?.Invoke(this, new EventArgs());
+                SuccesMsgBox succes = new();
+                succes.ShowDialog();
             }
-            else
-            {
-                HelperDB.Insert(new Emission
+            catch
                 {
-                    Year = Year,
-                    Additional = "0",
-                    Location = Location,
-                    Sector = Sector,
-                    Unit = Unit,
-                    Usage = Usage,
-                    Source = SelectedSource,
-                });
-                HelperDB.Insert(new Emission
-                {
-                    Year = Year,
-                    Additional = Location,
-                    Location = Location,
-                    Sector = Sector,
-                    Unit = Unit,
-                    Usage = Usage,
-                    Source = SelectedSource,
-                });
+                    
+                }
             }
-            CloseWindow?.Invoke(this, new EventArgs());
-        }
+            
 
         public bool Validate()
         {

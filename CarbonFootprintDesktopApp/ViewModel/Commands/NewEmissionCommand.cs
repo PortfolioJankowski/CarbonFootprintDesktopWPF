@@ -38,6 +38,7 @@ namespace CarbonFootprintDesktopApp.ViewModel.Commands
             VM.Calculations.Clear();
             VM.Calculations = new ObservableCollection<Calculation>(VM.GetCalculations());
             VM.TotalResult = HelperDB.GetResult().ToString("#,##0");
+           
         }
     }
 }

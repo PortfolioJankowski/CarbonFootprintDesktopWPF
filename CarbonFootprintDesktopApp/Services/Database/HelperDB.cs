@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using static SQLite.SQLite3;
 using System.Windows.Controls.Primitives;
 using static SQLite.TableMapping;
+using Microsoft.VisualBasic;
+using System.Windows;
 
 namespace CarbonFootprintDesktopApp.Database
 {
@@ -20,8 +22,10 @@ namespace CarbonFootprintDesktopApp.Database
     }
     class HelperDB
     {
+        private static char additional1;
+
         //TODO generyczny insert/update/delete/read/
-        
+
         public static double GetResult()
         {
             try
@@ -31,7 +35,9 @@ namespace CarbonFootprintDesktopApp.Database
                     string sqlQuery = $@"SELECT SUM(E.Usage* F.Value) as Result
                                             FROM Emissions E
                                             JOIN Factors F
-                                            ON E.Year = F.Year  AND E.[Emission Source] = F.Source  AND E.Additional = F.Additional AND F.Unit = E.Unit";
+                                            ON E.Year = F.Year  AND E.[Emission Source] = F.Source  AND E.Additional = F.Additional AND F.Unit = E.Unit
+                                            WHERE F.Method IN ('Market', 'General')"
+                                            ;
                     var result = cnn.ExecuteScalar<double?>(sqlQuery);
                     return (double)result;
                 }
@@ -154,6 +160,34 @@ namespace CarbonFootprintDesktopApp.Database
                 string sql = $@"SELECT * FROM Factors";
                 List<Factor> result = cnn.Query<Factor>(sql).ToList();
                 return result;
+            }
+
+        }
+        //na gridzie zaznaczam kalkulacje a musze usunąć emisje
+        public static void DeleteEmission(Calculation calc)
+        {       
+            try
+            { 
+                using (var cnn = new SQLite.SQLiteConnection(App.databasePath))
+                {
+                    string sql = $@"DELETE FROM Emissions
+                                WHERE Year = '{calc.Year}' and Additional = '0' and Sector = '{calc.Sector}' and [Emission Source] = '{calc.Source}' and Unit = '{calc.Unit}' and Location = '{calc.Location}' and Usage = '{calc.Usage}';";
+                    cnn.Execute(sql);
+
+                    if (calc.Source == "Purchased grid electricity")
+                    {
+                        string additional2 = calc.Location;
+                        string sql2 = $@"DELETE FROM Emissions
+                                WHERE Year = '{calc.Year}' and Additional = '{additional2}' and Sector = '{calc.Sector}' and [Emission Source] = '{calc.Source}' and Unit = '{calc.Unit}' and Location = '{calc.Location}' and Usage = '{calc.Usage}';";
+                        cnn.Execute(sql2);
+                    }
+                }
+                
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
         }
