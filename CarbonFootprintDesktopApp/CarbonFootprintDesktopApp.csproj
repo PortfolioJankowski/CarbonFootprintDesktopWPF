@@ -18,6 +18,7 @@
     <None Remove="Design\Images\scope.png" />
     <None Remove="Design\Images\scopes.png" />
     <None Remove="Design\Images\scopes_page.png" />
+    <None Remove="Design\Images\submit.png" />
     <None Remove="Design\Images\veritas_logo.png" />
   </ItemGroup>
 
@@ -45,6 +46,7 @@
     <Resource Include="Design\Images\poweroff.png" />
     <Resource Include="Design\Images\scope.png" />
     <Resource Include="Design\Images\scopes.png" />
+    <Resource Include="Design\Images\submit.png" />
     <Resource Include="Design\Images\veritas_logo.png" />
   </ItemGroup>
 

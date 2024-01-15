@@ -114,6 +114,7 @@ namespace CarbonFootprintDesktopApp.ViewModel
 
         //guziczek
         public ICommand AddEmissionCommand { get; set; }
+        public ICommand SubmitEmissionCommand { get; set; }
         //do tego EventHandlera odwołam się w CodeBehind formy
         public EventHandler CloseWindow;
         //gdy wybiorę źródło będę mógł wybrać jednostkę
@@ -182,12 +183,10 @@ namespace CarbonFootprintDesktopApp.ViewModel
                     });
                 }
                 CloseWindow?.Invoke(this, new EventArgs());
-                SuccesMsgBox succes = new();
-                succes.ShowDialog();
             }
-            catch
+            catch (Exception ex)
                 {
-                    
+                Console.WriteLine(ex.Message);
                 }
             }
             
@@ -204,7 +203,5 @@ namespace CarbonFootprintDesktopApp.ViewModel
                 return false;
             }
         }
-
-        
     }
 }

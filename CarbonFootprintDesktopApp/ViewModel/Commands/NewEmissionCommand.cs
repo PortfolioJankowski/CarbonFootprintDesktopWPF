@@ -32,13 +32,12 @@ namespace CarbonFootprintDesktopApp.ViewModel.Commands
         }
         public void Execute(object? parameter)
         {
-            EmissionView view = new EmissionView();
-            view.ShowDialog();
-            //po zamknięciu formy ładujemy kalkulacje ponownie
-            VM.Calculations.Clear();
-            VM.Calculations = new ObservableCollection<Calculation>(VM.GetCalculations());
-            VM.TotalResult = HelperDB.GetResult().ToString("#,##0");
-           
+                EmissionView view = new EmissionView();
+                view.ShowDialog();
+                //po zamknięciu formy ładujemy kalkulacje ponownie
+                VM.Calculations.Clear();
+                VM.Calculations = new ObservableCollection<Calculation>(VM.GetCalculations());
+                VM.TotalResult = HelperDB.GetResult().ToString("#,##0");
         }
     }
 }

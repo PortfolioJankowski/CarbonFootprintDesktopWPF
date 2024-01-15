@@ -6,6 +6,7 @@ using CarbonFootprintDesktopApp.ViewModel.Commands;
 using Ganss.Excel;
 using HandyControl.Controls;
 using Microsoft.Win32;
+using NPOI.SS.Formula.Functions;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,15 @@ namespace CarbonFootprintDesktopApp.ViewModel
 {
     public class HomeVM : Utilities.ViewModelBase
     {
+        //pola do których będę przypisywał dane nt wybranej kalkulacji
+        public int _year { get; set; }
+        public string _sector { get; set; }
+        public string _addidtional { get; set; }
+        public string _source { get; set; }
+        public string _location { get; set; }
+        public string _unit { get; set; }
+        public double _usage { get; set; }
+
         //łączny ślad węglowy
         private string totalResult { get; set; }
         public string TotalResult
@@ -45,10 +55,17 @@ namespace CarbonFootprintDesktopApp.ViewModel
             set
             {
                 selectedCalculation = value;
+                _year = SelectedCalculation.Year;
+                _sector = SelectedCalculation.Sector;
+                _addidtional = SelectedCalculation.Additional;
+                _source = SelectedCalculation.Source;
+                _location = SelectedCalculation.Location;
+                _unit = SelectedCalculation.Unit;
+                _usage = SelectedCalculation.Usage;
                 OnPropertyChanged(nameof(SelectedCalculation));
             }
         }
-
+      
         //kolekcja wszystkich kalkulacji, jakie pobieram z rozpoczęciem programu
         private ObservableCollection<Calculation> calculations { get; set; }
         public ObservableCollection<Calculation> Calculations
@@ -95,6 +112,7 @@ namespace CarbonFootprintDesktopApp.ViewModel
         public ICommand ChangeEmissionCommand { get; set; }
         public ICommand DeleteEmissionCommand { get; set; }
         public ICommand ImportEmissionCommand { get; set; }
+        public ICommand SubmitEmissionCommand { get; set; }
 
         //Konstruktor
         public HomeVM()
@@ -104,7 +122,6 @@ namespace CarbonFootprintDesktopApp.ViewModel
             NewEmissionCommand = new NewEmissionCommand(this);
             CalculationView = new ObservableCollection<Calculation>(Calculations);
             FilterCommand = new FilterCommand(this);
-            ChangeEmissionCommand = new ChangeEmissionCommand(this);
             DeleteEmissionCommand = new DeleteEmissionCommand(this);
             ImportEmissionCommand = new ImportEmissionCommand(this);
         }
@@ -204,21 +221,49 @@ namespace CarbonFootprintDesktopApp.ViewModel
                     if (double.TryParse(xlWorksheet.Cells[row, 11]?.Text?.ToString(), out double usage) )
                     {
                         int year = Convert.ToInt32(xlWorksheet.Cells[row, 6]?.Text?.ToString());
-                        HelperDB.Insert(new Emission
+                        if (xlWorksheet.Cells[row, 8]?.Text?.ToString() != "Purchased grid electricity")
                         {
-                            Year = year,
-                            Sector = xlWorksheet.Cells[row, 7]?.Text?.ToString(),
-                            Source = xlWorksheet.Cells[row, 8]?.Text?.ToString(),
-                            Location = xlWorksheet.Cells[row, 9]?.Text?.ToString(),
-                            Unit = xlWorksheet.Cells[row, 10]?.Text?.ToString(),
-                            Usage = usage,
-                            Additional = "0"
-                        });
+                            HelperDB.Insert(new Emission
+                            {
+                                Year = year,
+                                Sector = xlWorksheet.Cells[row, 7]?.Text?.ToString(),
+                                Source = xlWorksheet.Cells[row, 8]?.Text?.ToString(),
+                                Location = xlWorksheet.Cells[row, 9]?.Text?.ToString(),
+                                Unit = xlWorksheet.Cells[row, 10]?.Text?.ToString(),
+                                Usage = usage,
+                                Additional = "0"
+                            });
+                        }
+                        else
+                        {
+                            HelperDB.Insert(new Emission
+                            {
+                                Year = year,
+                                Sector = xlWorksheet.Cells[row, 7]?.Text?.ToString(),
+                                Source = xlWorksheet.Cells[row, 8]?.Text?.ToString(),
+                                Location = xlWorksheet.Cells[row, 9]?.Text?.ToString(),
+                                Unit = xlWorksheet.Cells[row, 10]?.Text?.ToString(),
+                                Usage = usage,
+                                Additional = "0"
+                            });
+                            HelperDB.Insert(new Emission
+                            {
+                                Year = year,
+                                Sector = xlWorksheet.Cells[row, 7]?.Text?.ToString(),
+                                Source = xlWorksheet.Cells[row, 8]?.Text?.ToString(),
+                                Location = xlWorksheet.Cells[row, 9]?.Text?.ToString(),
+                                Unit = xlWorksheet.Cells[row, 10]?.Text?.ToString(),
+                                Usage = usage,
+                                Additional = "Purchased grid electricity"
+                            });
+                        }
+                        
                     }
 
                     row++;
                 }
             }
         }
+
     }
 }

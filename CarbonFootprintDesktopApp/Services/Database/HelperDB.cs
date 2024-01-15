@@ -13,6 +13,7 @@ using System.Windows.Controls.Primitives;
 using static SQLite.TableMapping;
 using Microsoft.VisualBasic;
 using System.Windows;
+using CarbonFootprintDesktopApp.ViewModel;
 
 namespace CarbonFootprintDesktopApp.Database
 {
@@ -52,7 +53,7 @@ namespace CarbonFootprintDesktopApp.Database
         public static bool Insert<T>(T item)
         {
             bool result = false;
-            using(SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(App.databasePath))
+            using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(App.databasePath))
             {
                 conn.CreateTable<T>();
                 int rows = conn.Insert(item);
@@ -100,7 +101,7 @@ namespace CarbonFootprintDesktopApp.Database
         public static IEnumerable<Calculation> GetCalculations()
         {
             IEnumerable<Calculation> calculations;
-            using(var connection = new SQLiteConnection(App.databasePath))
+            using (var connection = new SQLiteConnection(App.databasePath))
             {
                 var query = @"
                 SELECT
@@ -133,7 +134,7 @@ namespace CarbonFootprintDesktopApp.Database
             try {
                 using (var cnn = new SQLite.SQLiteConnection(App.databasePath))
                 {
-                        string sqlQuery = $@"SELECT SUM(E.Usage * F.Value) as Result
+                    string sqlQuery = $@"SELECT SUM(E.Usage * F.Value) as Result
                                             FROM Emissions E
                                             JOIN Factors F ON E.Year = F.Year
                                                            AND E.[Emission Source] = F.Source
@@ -143,17 +144,17 @@ namespace CarbonFootprintDesktopApp.Database
                                             WHERE S.Scope = '{column}' AND F.Method in ('Market', 'General');";
                     var result = cnn.ExecuteScalar<double?>(sqlQuery);
                     return (double)result;
-                    }
                 }
-                catch (Exception ex) 
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    return 0;
-                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return 0;
+            }
         }
 
 
-        public static List<Factor> GetEmissions() 
+        public static List<Factor> GetEmissions()
         {
             using (var cnn = new SQLite.SQLiteConnection(App.databasePath))
             {
@@ -190,6 +191,34 @@ namespace CarbonFootprintDesktopApp.Database
                 Console.WriteLine(ex.Message);
             }
 
+        }
+
+        internal static void UpdateCalculation(HomeVM vm)
+        {
+            try
+            {
+                using (var cnn = new SQLite.SQLiteConnection(App.databasePath))
+                {
+                    //usuwam to co było
+                    string sql = $@"DELETE FROM Emissions
+                                WHERE Year = '{vm._year}' and Additional = '0' and Sector = '{vm._sector}' and [Emission Source] = '{vm._source}' and Unit = '{vm._unit}' and Location = '{vm._location}' and Usage = '{vm._usage}';";
+                    cnn.Execute(sql);
+
+                    if (vm.SelectedCalculation.Source == "Purchased grid electricity")
+                    {
+                        string additional2 = vm._location;
+                        string sql2 = $@"DELETE FROM Emissions
+                                WHERE Year = '{vm._year}' and Additional = '{additional2}' and Sector = '{vm._sector}' and [Emission Source] = '{vm._source}' and Unit = '{vm._unit}' and Location = '{vm._location}' and Usage = '{vm._usage}';";
+                        cnn.Execute(sql2);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

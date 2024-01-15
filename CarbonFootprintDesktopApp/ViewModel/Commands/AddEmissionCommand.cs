@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CarbonFootprintDesktopApp.View;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,9 +25,19 @@ namespace CarbonFootprintDesktopApp.ViewModel.Commands
 
         public void Execute(object? parameter)
         {
-            //Walidacja czy wszystkie comboboxy są uzupełnione
-            VM.CreateEmission();
-            VM.CloseWindow?.Invoke(this, new EventArgs());
+            try
+            {
+                VM.CreateEmission();
+                VM.CloseWindow?.Invoke(this, new EventArgs());
+                SuccesMsgBox succes = new();
+                succes.ShowDialog();
+            }
+            catch
+            {
+                FailMsgBox fail = new();
+                fail.ShowDialog();
+            }
+            
         }
     }
 }

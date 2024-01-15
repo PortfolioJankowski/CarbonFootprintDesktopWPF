@@ -42,28 +42,21 @@
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left"
                     Command="{Binding NewEmissionCommand}"
-                    Margin="17,0"/>
-            <Button Content="Change Emission"
-                    Height="30"
-                    Width="120"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Left"
-                    Command="{Binding ChangeEmissionCommand}"
-                    Margin="17,0"/>
+                    Margin="17,0,50,0"/>
             <Button Content="Delete Emission"
                     Height="30"
                     Width="120"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left"
                     Command="{Binding DeleteEmissionCommand}"
-                    Margin="17,0"/>
+                    Margin="55,0,55,0"/>
             <Button Content="Import Emission"
                     Height="30"
                     Width="120"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left"
                     Command="{Binding ImportEmissionCommand}"
-                    Margin="10,0"/>
+                    Margin="55,0,10,0"/>
         </DockPanel>
         <TextBlock Text="Filter" FontFamily="Century Gothic" Foreground="#DBDBDB" Margin="210,135,-8,0" Grid.Column="1" />
         <TextBox  Name="txtFilter" Text="{Binding FilteredText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="245,124,20,448" Grid.Column="1" >

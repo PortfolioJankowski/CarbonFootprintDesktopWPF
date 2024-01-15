@@ -21,12 +21,9 @@ namespace CarbonFootprintDesktopApp.View
     /// </summary>
     public partial class EmissionView : Window
     {
-        EmissionViewModel VM;
         public EmissionView()
         {
             InitializeComponent();
-            VM = Resources["vm"] as EmissionViewModel;
-            VM.CloseWindow += VM_CloseWindow; ;
         }
 
         private void VM_CloseWindow(object? sender, EventArgs e)
