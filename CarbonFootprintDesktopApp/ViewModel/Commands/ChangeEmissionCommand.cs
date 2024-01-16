@@ -1,21 +1,21 @@
 ﻿using CarbonFootprintDesktopApp.View;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace CarbonFootprintDesktopApp.ViewModel.Commands
-{   
-    public class AddEmissionCommand : ICommand
+{
+    public class ChangeEmissionCommand : ICommand
     {
-        public EmissionViewModel VM { get; set; }
-        public AddEmissionCommand(EmissionViewModel vm)
+        HomeVM VM;
+        public ChangeEmissionCommand(HomeVM vm)
         {
             VM = vm;
         }
-
         public event EventHandler? CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
@@ -24,24 +24,22 @@ namespace CarbonFootprintDesktopApp.ViewModel.Commands
 
         public bool CanExecute(object? parameter)
         {
-            return true;
+            if (VM.SelectedCalculation != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void Execute(object? parameter)
         {
-            try
-            {
-                VM.CreateEmission();
-                VM.CloseWindow?.Invoke(this, new EventArgs());
-                SuccesMsgBox succes = new();
-                succes.ShowDialog();
-            }
-            catch
-            {
-                FailMsgBox fail = new();
-                fail.ShowDialog();
-            }
-            
+            //zrób właściwość CalculationTemp
+            //VM.Calculation temp = VM.SelectedCalculation
+            ChangeEmissionView changeEmissionView = new ChangeEmissionView(VM);
+            changeEmissionView.Show();
         }
     }
 }

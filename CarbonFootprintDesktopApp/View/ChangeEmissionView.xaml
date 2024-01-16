@@ -1,4 +1,4 @@
-﻿<Window x:Class="CarbonFootprintDesktopApp.View.EmissionView"
+﻿<Window x:Class="CarbonFootprintDesktopApp.View.ChangeEmissionView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,21 +12,22 @@
         WindowStyle="None"
         Background="Transparent">
     <Window.DataContext>
-        <vm:EmissionViewModel/>
+        <vm:HomeVM/>
     </Window.DataContext>
     <Window.Resources>
         <ResourceDictionary>
-            <vm:EmissionViewModel x:Key="vm"/>
+            <vm:HomeVM x:Key="vm"/>
+            <vm:EmissionViewModel x:Key="ne" />
         </ResourceDictionary>
     </Window.Resources>
 
 
     <Grid>
-        <Border Background="#F14747"
-            CornerRadius="15"
-            BorderThickness="1" Margin="0,0,0,0" >
+        <Border Background="#3b4129"
+        CornerRadius="15"
+        BorderThickness="1" Margin="0,0,0,16" >
 
-            <Grid Margin="0,0,-1,0">
+            <Grid Margin="0,0,-1,-1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="2*" />
@@ -37,78 +38,70 @@
                 </Grid.RowDefinitions>
                 <!-- Header -->
                 <TextBlock Foreground="#DBDBDB"
-                       Text="Add Emission"
-                       FontSize="18"
-                       FontWeight="Bold"
-                       Margin="10,15,0,20"
-                       HorizontalAlignment="Left"/>
+                   Text="Change Emission"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Margin="10,15,0,20"
+                   HorizontalAlignment="Left"/>
 
                 <!-- Form Content -->
-                <StackPanel Margin="10,60,0,0" Grid.Column="0" Grid.Row="0">
+                <StackPanel Margin="10,60,0,17" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
 
                     <!-- Year -->
                     <StackPanel Orientation="Horizontal"  Margin="0,0,0,10">
                         <TextBlock Foreground="#DBDBDB" Text="Sector" Width="85"/>
-                        <TextBox Margin="10,0,0,0"
-                          Width="100"
-                          Text="{Binding Sector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Margin="10,0,0,0" x:Name="SectorTxt"
+                      Width="100"
+                      Text="{Binding SelectedCalculation.Sector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 
                     <!-- Emission Source -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Foreground="#DBDBDB" Text="Emission Source" Width="85"/>
                         <ComboBox
-                                    Width="100"
-                            Margin="10,0,0,0"
-                                    ItemsSource="{Binding Sources, UpdateSourceTrigger=PropertyChanged}"
-                                    SelectedItem="{Binding SelectedSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                SelectionChanged="ComboBox_SelectionChanged"
+                                Width="100"
+                                Margin="10,0,0,0"
+                                IsEnabled="True"
+                                ItemsSource="{Binding Source={StaticResource ne}, Path=Sources, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedItem="{Binding SelectedCalculation.Source, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal"  Margin="0,0,0,10">
                         <TextBlock Foreground="#DBDBDB" Text="Location" Width="85" />
                         <TextBox Margin="10,0,0,0"
-                                  Width="100"
-                                  Text="{Binding Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                              Width="100"
+                              Text="{Binding SelectedCalculation.Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Margin="0,60,0,0" Grid.Column="1" Grid.Row="0" Width="120">
+                <StackPanel Margin="16,60,16,27" Grid.Column="1" Grid.Row="0" Width="120" Grid.RowSpan="2">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Foreground="#DBDBDB" Text="Year" Width="35"/>
                         <ComboBox Margin="10,0,0,0"
-                           Width="70"
-                           ItemsSource="{Binding Years, UpdateSourceTrigger=PropertyChanged}"
-                           SelectedItem="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                       Width="70"
+                       ItemsSource="{Binding Source={StaticResource ne}, Path=Years, UpdateSourceTrigger=PropertyChanged}"
+                       SelectedItem="{Binding SelectedCalculation.Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                     <!-- Usage -->
                     <StackPanel Orientation="Horizontal"  Margin="0,0,0,10">
                         <TextBlock Foreground="#DBDBDB" Text="Usage" Width="35"/>
                         <TextBox Margin="10,0,0,0"
-                                  Width="67"
-                                  Text="{Binding Usage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                              Width="67"
+                              Text="{Binding SelectedCalculation.Usage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                     <!-- Unit -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                         <TextBlock Foreground="#DBDBDB" Text="Unit" Width="35"/>
                         <ComboBox Margin="10,0,0,0"
-                         Width="66"
-                          ItemsSource="{Binding Units, UpdateSourceTrigger=PropertyChanged}"
-                          IsEnabled="{Binding IsUnitEnabled, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            x:Name="UnitsCmb"
+                            Width="66"
+                            IsEnabled="True"
+                            SelectedItem="{Binding SelectedCalculation.Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
 
                 </StackPanel>
-                <Button Width="40" Height="35" BorderThickness="0" Command="{Binding AddEmissionCommand}" IsEnabled="{Binding IsFormValid, UpdateSourceTrigger=PropertyChanged}"
-                        Click="Button_Click"        
-                        Grid.Row="1"
-                                HorizontalAlignment="Left"
-                                Margin="190,0,0,0" Grid.ColumnSpan="2">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/Design/Images/add.png" />
-                    </Button.Background>
-                </Button>
-
-                <Button Width="20" Height="19" HorizontalAlignment="Left" BorderThickness="0" Click="Button_Click" Grid.Column="1" Margin="125,3,0,0" VerticalAlignment="Top">
+                <Button Width="20" Height="19" HorizontalAlignment="Left" BorderThickness="0" Click="Button_Click"  Grid.Column="1" Margin="125,3,0,0" VerticalAlignment="Top">
                     <Button.Background>
                         <ImageBrush ImageSource="/Design/Images/back.png" />
                     </Button.Background>
@@ -117,5 +110,4 @@
             </Grid>
         </Border>
     </Grid>
-
 </Window>

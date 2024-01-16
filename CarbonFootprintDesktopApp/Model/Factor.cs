@@ -11,6 +11,7 @@ namespace CarbonFootprintDesktopApp.Model
     [SQLite.Table("Factors")]
     public class Factor
     {
+      
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         public string Source { get; set; }
@@ -19,5 +20,8 @@ namespace CarbonFootprintDesktopApp.Model
         public string Additional { get; set; } 
         public int Year { get; set; }
         public string Database { get; set; }
+        public string Scope { get; set; }
+        public string Category { get; set; }
+        public string Method { get; set; }
     }
 }

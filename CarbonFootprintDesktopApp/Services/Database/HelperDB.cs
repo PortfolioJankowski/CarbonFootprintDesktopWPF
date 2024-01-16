@@ -17,11 +17,7 @@ using CarbonFootprintDesktopApp.ViewModel;
 
 namespace CarbonFootprintDesktopApp.Database
 {
-    public class ColumnResult
-    {
-        public string Column { get; set; }
-    }
-    class HelperDB
+    public class HelperDB
     {
         private static char additional1;
 
@@ -50,43 +46,94 @@ namespace CarbonFootprintDesktopApp.Database
             }
         }
 
-        public static bool Insert<T>(T item)
+        public static bool InsertEmission<T>(T item) where T : Emission
         {
-            bool result = false;
+            bool result = false;      
             using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(App.databasePath))
             {
+                //dodaje Emisje do tabeli
                 conn.CreateTable<T>();
                 int rows = conn.Insert(item);
                 if (rows > 0) result = true;
+                
+                //jeżeli dodano Emisje to pobieram z bazy odpowiedni wskaźnik
+                List<Factor> factorList = HelperDB.Read<Factor>();
+                Factor factor = factorList.Where(f => f.Unit == item.Unit && f.Source == item.Source && f.Additional == "0" && f.Year == item.Year).FirstOrDefault();
+                if (factor != null)
+                {
+                    //tworzę kalkulację, którą dodam do tabeli na podstawie user inputu i pobranego wskaźnika
+                    conn.Insert(new Calculation
+                    {
+                        Year = item.Year,
+                        Sector = item.Sector,
+                        Scope = factor.Scope,
+                        Category = factor.Category,
+                        Source = item.Source,
+                        Location = item.Location,
+                        Unit = item.Unit,
+                        Usage = item.Usage,
+                        Result = item.Usage * factor.Value,
+                        Method = factor.Method
+                    });
+                }
+
+                //tworzę drugą kalkulację dla location
+                if (item.Source == "Purchased grid electricity")
+                {
+                    factor = factorList.Where(f => f.Unit == item.Unit && f.Source == item.Source && f.Additional == item.Location && f.Year == item.Year).FirstOrDefault();
+                    if (factor != null)
+                    {
+                        factor = factorList.Where(f => f.Unit == item.Unit && f.Source == item.Source && f.Additional == item.Location && f.Year == item.Year).FirstOrDefault();
+                        conn.Insert(new Calculation
+                        {
+                            Year = item.Year,
+                            Sector = item.Sector,
+                            Scope = factor.Scope,
+                            Category = factor.Category,
+                            Source = item.Source,
+                            Location = item.Location,
+                            Unit = item.Unit,
+                            Usage = item.Usage,
+                            Result = item.Usage * factor.Value,
+                            Method = factor.Method
+                        });
+                    }
+                }   
             }
             return result;
         }
 
-        public static bool Update<T>(T item)
+        public static bool Update<T>(T item) where T : Calculation
+        {
+            //TODO -> szukam ID SelectedCalculation i kalkulacji identycznej jeśli to jest energia elektryczna
+            // temp SelectedCalculation przechowuje w VM a tworzę ją poprzez naciśnięcie Commanda
+            //updatuje te recorduy (rozważam czy to jest prąd)
+            return true;
+        }
+
+        public static bool Delete<T>(T item) where T : Calculation
         {
             bool result = false;
             using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(App.databasePath))
             {
                 conn.CreateTable<T>();
-                int rows = conn.Update(item);
-                if (rows > 0) result = true;
-            }
-            return result;
-        }
-
-        public static bool Delete<T>(T item)
-        {
-            bool result = false;
-            using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(App.databasePath))
-            {
-                conn.CreateTable<T>();
+                //usuwam kalkulacje
                 int rows = conn.Delete(item);
                 if (rows > 0) result = true;
+                string additional = "0";
+                //usuwam emisje związaną z kalkulacją
+                string deleteSql = $"DELETE FROM Emissions WHERE Id = (Select Id FROM Emissions WHERE Year = '{item.Year}' AND [Emission Source] = '{item.Source}' AND Unit = '{item.Unit}' AND Sector = '{item.Sector}' AND Location = '{item.Location}' AND Usage = '{item.Usage}' AND Additional = {additional} Limit 1)";
+                conn.Execute(deleteSql);
+
+                if (item.Source == "Purchased grid electricity")
+                {
+                    string deleteLocation = $"DELETE FROM Emissions WHERE Id = (Select Id FROM Emissions WHERE Year = '{item.Year}' AND [Emission Source] = '{item.Source}' AND Unit = '{item.Unit}' AND Sector = '{item.Sector}' AND Location = '{item.Location}' AND Usage = '{item.Usage}' AND Additional = '{item.Location}' Limit 1)";
+                }
             }
             return result;
         }
 
-        public static List<T> Read<T>(T item) where T : new()
+        public static List<T> Read<T>() where T : new()
         {
             List<T> items;
             using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(App.databasePath))
@@ -95,38 +142,6 @@ namespace CarbonFootprintDesktopApp.Database
                 items = conn.Table<T>().ToList();
             }
             return items;
-        }
-
-        //zwracam kalkulacje do grida w HOME
-        public static IEnumerable<Calculation> GetCalculations()
-        {
-            IEnumerable<Calculation> calculations;
-            using (var connection = new SQLiteConnection(App.databasePath))
-            {
-                var query = @"
-                SELECT
-                E.Year,
-                E.Sector,
-                S.Scope,
-                S.Category,
-                E.[Emission Source] as Source, 
-                E.Location,
-                E.Unit,
-                E.Usage,
-                E.Usage * F.Value as Result
-                FROM    
-                    Emissions E
-                JOIN Factors F 
-                    ON E.Year = F.Year
-                        AND E.[Emission Source] = F.Source  
-                        AND E.Additional = F.Additional
-                        AND F.Unit = E.Unit
-                JOIN Scopes S
-	                ON F.Id = S.FactorsId
-                WHERE F.Method in ('Market','General')";
-                calculations = connection.Query<Calculation>(query);
-                return calculations;
-            }
         }
 
         public static double GetPieChartData(string column)
@@ -182,43 +197,14 @@ namespace CarbonFootprintDesktopApp.Database
                                 WHERE Year = '{calc.Year}' and Additional = '{additional2}' and Sector = '{calc.Sector}' and [Emission Source] = '{calc.Source}' and Unit = '{calc.Unit}' and Location = '{calc.Location}' and Usage = '{calc.Usage}';";
                         cnn.Execute(sql2);
                     }
-                }
-                
-                
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-        }
-
-        internal static void UpdateCalculation(HomeVM vm)
-        {
-            try
-            {
-                using (var cnn = new SQLite.SQLiteConnection(App.databasePath))
-                {
-                    //usuwam to co było
-                    string sql = $@"DELETE FROM Emissions
-                                WHERE Year = '{vm._year}' and Additional = '0' and Sector = '{vm._sector}' and [Emission Source] = '{vm._source}' and Unit = '{vm._unit}' and Location = '{vm._location}' and Usage = '{vm._usage}';";
-                    cnn.Execute(sql);
-
-                    if (vm.SelectedCalculation.Source == "Purchased grid electricity")
-                    {
-                        string additional2 = vm._location;
-                        string sql2 = $@"DELETE FROM Emissions
-                                WHERE Year = '{vm._year}' and Additional = '{additional2}' and Sector = '{vm._sector}' and [Emission Source] = '{vm._source}' and Unit = '{vm._unit}' and Location = '{vm._location}' and Usage = '{vm._usage}';";
-                        cnn.Execute(sql2);
-                    }
-                }
-
-
+                }                
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
+
+        
     }
 }

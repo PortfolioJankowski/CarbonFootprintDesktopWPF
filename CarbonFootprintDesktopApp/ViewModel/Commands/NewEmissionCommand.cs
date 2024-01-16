@@ -36,8 +36,8 @@ namespace CarbonFootprintDesktopApp.ViewModel.Commands
                 view.ShowDialog();
                 //po zamknięciu formy ładujemy kalkulacje ponownie
                 VM.Calculations.Clear();
-                VM.Calculations = new ObservableCollection<Calculation>(VM.GetCalculations());
-                VM.TotalResult = HelperDB.GetResult().ToString("#,##0");
+                VM.Calculations = new ObservableCollection<Calculation>(HelperDB.Read<Calculation>().Where(c => c.Method != "Location"));
+                VM.TotalResult = VM.Calculations.Sum(e => e.Result).ToString("#,##0");
         }
     }
 }

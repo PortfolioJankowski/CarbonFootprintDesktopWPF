@@ -39,9 +39,9 @@ namespace CarbonFootprintDesktopApp.ViewModel
             }
         }
 
-        private double usage;
+        private double? usage;
 
-        public double Usage
+        public double? Usage
         {
             get { return usage; }
             set 
@@ -143,53 +143,17 @@ namespace CarbonFootprintDesktopApp.ViewModel
         
         public void CreateEmission()
         {
-            //jeżeli jest energia elektryczna to dodaje 2x (w jednym przypadku dodaje z Additional, żeby zaznaczyć że będzie location)
-            try
+            HelperDB.InsertEmission(new Emission
             {
-                if (selectedSource != "Purchased grid electricity")
-                {
-                    HelperDB.Insert(new Emission
-                    {
-                        Year = Year,
-                        Additional = "0",
-                        Location = Location,
-                        Sector = Sector,
-                        Unit = Unit,
-                        Usage = Usage,
-                        Source = SelectedSource,
-                    });
-                }
-                else
-                {
-                    HelperDB.Insert(new Emission
-                    {
-                        Year = Year,
-                        Additional = "0",
-                        Location = Location,
-                        Sector = Sector,
-                        Unit = Unit,
-                        Usage = Usage,
-                        Source = SelectedSource,
-                    });
-                    HelperDB.Insert(new Emission
-                    {
-                        Year = Year,
-                        Additional = Location,
-                        Location = Location,
-                        Sector = Sector,
-                        Unit = Unit,
-                        Usage = Usage,
-                        Source = SelectedSource,
-                    });
-                }
-                CloseWindow?.Invoke(this, new EventArgs());
-            }
-            catch (Exception ex)
-                {
-                Console.WriteLine(ex.Message);
-                }
-            }
-            
+                Year = Year,
+                Location = Location,
+                Source = SelectedSource,
+                Sector = Sector,
+                Unit = Unit,
+                Usage = (double)Usage,
+                Additional = "0"
+            }) ;
+         }
 
         public bool Validate()
         {

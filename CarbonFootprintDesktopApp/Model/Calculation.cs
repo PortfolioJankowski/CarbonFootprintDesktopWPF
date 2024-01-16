@@ -1,4 +1,5 @@
 ﻿
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace CarbonFootprintDesktopApp.Model
 {
     public class Calculation
     {
+        [PrimaryKey, AutoIncrement]
        public int Id { get; set; }
         public int Year { get; set; }
         public string Sector { get; set; }
@@ -19,7 +21,6 @@ namespace CarbonFootprintDesktopApp.Model
         public string Unit { get; set; }
         public double Usage { get; set; }
         public double Result { get; set; }
-        public string Additional { get; set; }
-        public string Method { get; set; }
+        public string Method { get; set; } 
     }
 }
