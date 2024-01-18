@@ -14,6 +14,8 @@ using static SQLite.TableMapping;
 using Microsoft.VisualBasic;
 using System.Windows;
 using CarbonFootprintDesktopApp.ViewModel;
+using Org.BouncyCastle.Asn1.Ocsp;
+using Org.BouncyCastle.Asn1.Cmp;
 
 namespace CarbonFootprintDesktopApp.Database
 {
@@ -103,11 +105,18 @@ namespace CarbonFootprintDesktopApp.Database
             return result;
         }
 
-        public static bool Update<T>(T item) where T : Calculation
+        public static bool Update<T>(T item, Calculation calc) where T : Calculation
         {
-            //TODO -> szukam ID SelectedCalculation i kalkulacji identycznej jeśli to jest energia elektryczna
-            // temp SelectedCalculation przechowuje w VM a tworzę ją poprzez naciśnięcie Commanda
-            //updatuje te recorduy (rozważam czy to jest prąd)
+            Delete(calc);
+            InsertEmission(new Emission() { 
+                Year = item.Year,
+                Sector = item.Sector,
+                Additional = "0",
+                Location = item.Location,
+                Source = item.Source,
+                Unit = item.Unit,
+                Usage = item.Usage
+            });
             return true;
         }
 
@@ -116,7 +125,6 @@ namespace CarbonFootprintDesktopApp.Database
             bool result = false;
             using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(App.databasePath))
             {
-                conn.CreateTable<T>();
                 //usuwam kalkulacje
                 int rows = conn.Delete(item);
                 if (rows > 0) result = true;
@@ -138,7 +146,6 @@ namespace CarbonFootprintDesktopApp.Database
             List<T> items;
             using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(App.databasePath))
             {
-                conn.CreateTable<T>();
                 items = conn.Table<T>().ToList();
             }
             return items;

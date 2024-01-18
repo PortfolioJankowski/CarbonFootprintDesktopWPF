@@ -13,7 +13,7 @@ using LiveCharts.Defaults;
 namespace CarbonFootprintDesktopApp.ViewModel
 {
     //dziedzicze z klasy, która zaimplementowała INotifyPropertyChanged
-     class ScopesVM :Utilities.ViewModelBase
+     public class ScopesVM :Utilities.ViewModelBase
     {
  
         private double firstScope;
@@ -55,43 +55,47 @@ namespace CarbonFootprintDesktopApp.ViewModel
         public ScopesVM()
         {
             SetValues();
+            DoughnutChartViewModel chart = new();
         }
 
         private void SetValues()
         {
-            FirstScope = Convert.ToDouble(HelperDB.GetPieChartData("Scope 1"));
-            SecondScope = HelperDB.GetPieChartData("Scope 2");
-            ThirdScope = HelperDB.GetPieChartData("Scope 3");
+            List<Calculation> calculations = new List<Calculation>(HelperDB.Read<Calculation>().Where(c => c.Method != "Location")); 
+            FirstScope = calculations.Where(c => c.Scope == "Scope 1").Sum(c => c.Result);
+            SecondScope = calculations.Where(c => c.Scope == "Scope 2").Sum(c => c.Result);
+            ThirdScope = calculations.Where(c => c.Scope == "Scope 3").Sum(c => c.Result);
         }
 
     }
+
     public class DoughnutChartViewModel
     {
         public SeriesCollection SeriesCollection { get; set; }
 
         public DoughnutChartViewModel()
         {
+            List<Calculation> calculations = new List<Calculation>(HelperDB.Read<Calculation>().Where(c => c.Method != "Location"));
             SeriesCollection = new SeriesCollection
             {
                 new PieSeries
                 {
                     Title = "Scope 1",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(HelperDB.GetPieChartData("Scope 1")) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(calculations.Where(c => c.Scope == "Scope 1").Sum(c => c.Result)) },
                     DataLabels = true
                 },
                 new PieSeries
                 {
                     Title = "Scope 2",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(HelperDB.GetPieChartData("Scope 2")) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(calculations.Where(c => c.Scope == "Scope 2").Sum(c => c.Result)) },
                     DataLabels = true
                 },
                 new PieSeries
                 {
                     Title = "Scope 3",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(HelperDB.GetPieChartData("Scope 3")) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(calculations.Where(c => c.Scope == "Scope 3").Sum(c => c.Result)) },
                     DataLabels = true
                 }  
             };
-        }
+        }  
     }
 }

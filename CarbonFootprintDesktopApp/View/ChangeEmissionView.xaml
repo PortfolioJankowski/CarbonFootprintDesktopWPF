@@ -52,26 +52,25 @@
                         <TextBlock Foreground="#DBDBDB" Text="Sector" Width="85"/>
                         <TextBox Margin="10,0,0,0" x:Name="SectorTxt"
                       Width="100"
-                      Text="{Binding SelectedCalculation.Sector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                      Text="{Binding Sector, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 
                     <!-- Emission Source -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Foreground="#DBDBDB" Text="Emission Source" Width="85"/>
                         <ComboBox
-                                SelectionChanged="ComboBox_SelectionChanged"
                                 Width="100"
                                 Margin="10,0,0,0"
                                 IsEnabled="True"
                                 ItemsSource="{Binding Source={StaticResource ne}, Path=Sources, UpdateSourceTrigger=PropertyChanged}"
-                                SelectedItem="{Binding SelectedCalculation.Source, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                SelectedItem="{Binding Source, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal"  Margin="0,0,0,10">
                         <TextBlock Foreground="#DBDBDB" Text="Location" Width="85" />
                         <TextBox Margin="10,0,0,0"
                               Width="100"
-                              Text="{Binding SelectedCalculation.Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                              Text="{Binding Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                 </StackPanel>
 
@@ -81,14 +80,14 @@
                         <ComboBox Margin="10,0,0,0"
                        Width="70"
                        ItemsSource="{Binding Source={StaticResource ne}, Path=Years, UpdateSourceTrigger=PropertyChanged}"
-                       SelectedItem="{Binding SelectedCalculation.Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                       SelectedItem="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                     <!-- Usage -->
                     <StackPanel Orientation="Horizontal"  Margin="0,0,0,10">
                         <TextBlock Foreground="#DBDBDB" Text="Usage" Width="35"/>
                         <TextBox Margin="10,0,0,0"
                               Width="67"
-                              Text="{Binding SelectedCalculation.Usage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                              Text="{Binding Usage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                     <!-- Unit -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
@@ -97,16 +96,16 @@
                             x:Name="UnitsCmb"
                             Width="66"
                             IsEnabled="True"
-                            SelectedItem="{Binding SelectedCalculation.Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            SelectedItem="{Binding Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            ItemsSource="{Binding Units}" />
                     </StackPanel>
 
                 </StackPanel>
-                <Button Width="20" Height="19" HorizontalAlignment="Left" BorderThickness="0" Click="Button_Click"  Grid.Column="1" Margin="125,3,0,0" VerticalAlignment="Top">
+                <Button Width="20" Height="19" HorizontalAlignment="Left" BorderThickness="0" Click="Button_Click"  Grid.Column="1" Margin="125,3,0,0" VerticalAlignment="Top" Command="{Binding SubmitChangesCommand}" Visibility="{Binding IsCloseVisible, UpdateSourceTrigger=PropertyChanged}">
                     <Button.Background>
                         <ImageBrush ImageSource="/Design/Images/back.png" />
                     </Button.Background>
                 </Button>
-
             </Grid>
         </Border>
     </Grid>

@@ -5,9 +5,11 @@ using CarbonFootprintDesktopApp.View;
 using CarbonFootprintDesktopApp.ViewModel.Commands;
 using Ganss.Excel;
 using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 using Microsoft.Win32;
 using NPOI.SS.Formula.Functions;
 using NPOI.Util;
+using NPOI.XSSF.Streaming.Values;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,96 @@ namespace CarbonFootprintDesktopApp.ViewModel
 {
     public class HomeVM : Utilities.ViewModelBase
     {
+        private int year;
+
+        public int Year
+        {
+            get { return year; }
+            set 
+            {
+                year = value;
+                OnPropertyChanged("Year");
+                Validate();
+                OnPropertyChanged("IsCloseVisible");
+            }
+        }
+
+        private string source;
+
+        public string Source
+        {
+            get { return source; }
+            set
+            {
+                source = value;
+                OnPropertyChanged("Source");
+                Units = HelperDB.Read<Factor>()
+                        .Where(c => c.Source == Source)
+                        .Select(c => c.Unit)
+                        .Distinct()
+                        .ToList();
+                OnPropertyChanged("Source");
+                Validate();
+                OnPropertyChanged("IsCloseVisible");
+            }
+        }
+
+        private string location;
+
+        public string Location
+        {
+            get { return location; }
+            set 
+            { 
+                location = value;
+                OnPropertyChanged("Location");
+                Validate();
+                OnPropertyChanged("IsCloseVisible");
+               
+            }
+        }
+        private string sector;
+
+        public string Sector
+        {
+            get { return sector; }
+            set 
+            { 
+                sector = value;
+                OnPropertyChanged("Sector");
+                Validate();
+                OnPropertyChanged("IsCloseVisible");
+            }
+        }
+        private string unit;
+
+        public string Unit
+        {
+            get { return unit; }
+            set 
+            { 
+                unit = value;
+                OnPropertyChanged("Unit");
+                Validate();
+                OnPropertyChanged("IsCloseVisible");
+            }
+        }
+        private double usage;
+
+        public double Usage
+        {
+            get { return usage; }
+            set 
+            { 
+                usage = value;
+                OnPropertyChanged("Usage");
+                Validate();
+                OnPropertyChanged("IsCloseVisible");
+            }
+        }
+
+
+
         //łączny ślad węglowy
         private string totalResult { get; set; }
         public string TotalResult
@@ -35,7 +127,7 @@ namespace CarbonFootprintDesktopApp.ViewModel
             get { return totalResult; }
             set
             {
-                totalResult = HelperDB.GetResult().ToString();
+                totalResult = value;
                 OnPropertyChanged("TotalResult");
             }
         }
@@ -47,12 +139,57 @@ namespace CarbonFootprintDesktopApp.ViewModel
             set
             {
                 selectedCalculation = value;
-                OnPropertyChanged("SelectedCalculation");
+                Year = SelectedCalculation.Year;
+                Location = SelectedCalculation.Location;
+                Sector = SelectedCalculation.Sector;
+                Usage = SelectedCalculation.Usage;
+                Unit = SelectedCalculation.Unit;
+                Source = SelectedCalculation.Source;
+                OnPropertyChanged("Year");
+                OnPropertyChanged("Location");
+                OnPropertyChanged("Sector");
+                OnPropertyChanged("Usage");
                 OnPropertyChanged("Unit");
+                OnPropertyChanged("Source");
+                Units = HelperDB.Read<Factor>()
+                        .Where(c => c.Source == Source)
+                        .Select(c => c.Unit)
+                        .Distinct()
+                        .ToList();
+                if (SelectedCalculation != null)
+                {
+                    if (Year != null && Sector != null && Location != null && Unit != null && Usage != null && Source != null)
+                    {
+                        IsCloseVisible = Visibility.Visible;
+                    }
+                    else
+                    {
+                        IsCloseVisible = Visibility.Hidden;
+                    }
+                }
+                else
+                {
+                    IsCloseVisible = Visibility.Visible;
+                }
+
+                OnPropertyChanged("IsCloseVisible");
+                OnPropertyChanged("SelectedCalculation");
+                OnPropertyChanged("Units");
                   
             }
         }
-      
+        private List<string> units;
+
+        public List<string> Units
+        {
+            get { return units; }
+            set 
+            { 
+                units = value;
+                OnPropertyChanged("Units");
+            }
+        }
+
         //kolekcja wszystkich kalkulacji, jakie pobieram z rozpoczęciem programu
         private ObservableCollection<Calculation> calculations { get; set; }
         public ObservableCollection<Calculation> Calculations
@@ -93,16 +230,25 @@ namespace CarbonFootprintDesktopApp.ViewModel
                 OnPropertyChanged(nameof(CalculationView));
             }
         }
-        public List<string> Unit { get; set; }
-       
+
         //guziki
         public ICommand NewEmissionCommand { get; set; }
         public ICommand FilterCommand { get; set; }
         public ICommand ChangeEmissionCommand { get; set; }
         public ICommand DeleteEmissionCommand { get; set; }
         public ICommand ImportEmissionCommand { get; set; }
-        public ICommand SubmitEmissionCommand { get; set; }
-        
+        public ICommand SubmitChangesCommand { get; set; }
+
+        private Visibility isCloseVisible;
+
+        public Visibility IsCloseVisible
+        {
+            get { return isCloseVisible; }
+            set
+            {
+                isCloseVisible = value;
+            }
+        }
 
         //Konstruktor
         public HomeVM()
@@ -115,7 +261,9 @@ namespace CarbonFootprintDesktopApp.ViewModel
             DeleteEmissionCommand = new DeleteEmissionCommand(this);
             ImportEmissionCommand = new ImportEmissionCommand(this);
             ChangeEmissionCommand = new ChangeEmissionCommand(this);
-            Unit = new List<string>();
+            SubmitChangesCommand = new SubmitChangesCommand(this);
+            Units = new List<string>();
+            IsCloseVisible = Visibility.Visible;
         }
         
         //metoda filtrująca
@@ -224,6 +372,16 @@ namespace CarbonFootprintDesktopApp.ViewModel
                 }
             }
         }
-
+        public void Validate()
+        {
+            if (Year == null || string.IsNullOrEmpty(Location) || string.IsNullOrEmpty(Sector) || string.IsNullOrEmpty(Usage.ToString()) || Unit == null || Source == null)
+            {
+                IsCloseVisible = Visibility.Hidden;
+            }
+            else
+            {
+                IsCloseVisible = Visibility.Visible;
+            }
+        }
     }
 }

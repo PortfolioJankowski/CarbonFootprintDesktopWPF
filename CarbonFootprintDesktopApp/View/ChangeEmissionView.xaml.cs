@@ -23,26 +23,15 @@ namespace CarbonFootprintDesktopApp.View
     /// </summary>
     public partial class ChangeEmissionView : Window
     {
-        HomeVM VM;
         public ChangeEmissionView(HomeVM vm)
         {
             InitializeComponent();
-            VM = vm;
             DataContext = vm;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            HelperDB.Update<Calculation>(VM.SelectedCalculation);
             Close();
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UnitsCmb.ItemsSource =  HelperDB.Read<Factor>()
-                                 .Where(c => c.Source == VM.SelectedCalculation.Source)
-                                 .Select(c => c.Unit)
-                                 .Distinct().ToList();
         }
     }
 }

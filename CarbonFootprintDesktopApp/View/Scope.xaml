@@ -38,7 +38,7 @@
                    VerticalAlignment="Top"
                    FontFamily="Century Gothic"
                    Margin="80,106,0,0" />
-        <TextBlock Text="{Binding FirstScope, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=# ##0}"
+        <TextBlock Text="{Binding FirstScope, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  StringFormat=# ##0}"
                    Foreground="#DBDBDB"
                    FontSize="16"
                    

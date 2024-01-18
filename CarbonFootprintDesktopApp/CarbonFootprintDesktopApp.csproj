@@ -5,7 +5,7 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>BV.ico</ApplicationIcon>
+    <ApplicationIcon>87414_calculator_icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="BV.ico" />
+    <Content Include="87414_calculator_icon.ico" />
   </ItemGroup>
 
   <ItemGroup>

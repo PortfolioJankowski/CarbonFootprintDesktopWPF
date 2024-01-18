@@ -29,6 +29,7 @@ namespace CarbonFootprintDesktopApp
             {
                 conn.CreateTable<Emission>();
                 conn.CreateTable<Factor>();
+                conn.CreateTable<Calculation>();
             }
             base.OnStartup(e);
         }
