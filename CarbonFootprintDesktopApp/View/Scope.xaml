@@ -40,12 +40,11 @@
                    Margin="80,106,0,0" />
         <TextBlock Text="{Binding FirstScope, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,  StringFormat=# ##0}"
                    Foreground="#DBDBDB"
-                   FontSize="16"
-                   
+                   FontSize="18"   
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    FontFamily="/Design/Fonts/#Rubik Medium"
-                   Margin="160,106,0,0"/>
+                   Margin="160,105,0,0"/>
 
         <TextBlock Text="Scope 2"
            Foreground="#DBDBDB"
@@ -53,15 +52,14 @@
            HorizontalAlignment="Left"
            VerticalAlignment="Top"
            FontFamily="Century Gothic"
-           Margin="80,166,0,0"
-           FontWeight="Bold"/>
+           Margin="80,166,0,0"/>
         <TextBlock Text="{Binding SecondScope, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=# ##0}"
            Foreground="#DBDBDB"
-           FontSize="16"
+           FontSize="18"
            HorizontalAlignment="Left"
            VerticalAlignment="Top"
            FontFamily="/Design/Fonts/#Rubik Medium"
-           Margin="160,166,0,0"
+           Margin="160,165,0,0"
            FontWeight="Bold"/>
 
         <TextBlock Text="Scope 3"
@@ -73,7 +71,7 @@
            Margin="80,226,0,0" />
         <TextBlock Text="{Binding ThirdScope, Mode=OneWay,UpdateSourceTrigger=PropertyChanged, StringFormat=# ##0}"
            Foreground="#DBDBDB"
-           FontSize="16"
+           FontSize="18"
            HorizontalAlignment="Left"
            VerticalAlignment="Top"
                    FontWeight="Bold"

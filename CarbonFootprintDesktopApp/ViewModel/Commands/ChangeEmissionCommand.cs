@@ -1,6 +1,9 @@
-﻿using CarbonFootprintDesktopApp.View;
+﻿using CarbonFootprintDesktopApp.Database;
+using CarbonFootprintDesktopApp.Model;
+using CarbonFootprintDesktopApp.View;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -39,7 +42,10 @@ namespace CarbonFootprintDesktopApp.ViewModel.Commands
             //zrób właściwość CalculationTemp
             //VM.Calculation temp = VM.SelectedCalculation
             ChangeEmissionView changeEmissionView = new ChangeEmissionView(VM);
-            changeEmissionView.Show();
+            changeEmissionView.ShowDialog();
+            VM.Calculations.Clear();
+            VM.Calculations = new ObservableCollection<Calculation>(HelperDB.Read<Calculation>().Where(c => c.Method != "Location"));
+            VM.TotalResult = VM.Calculations.Sum(e => e.Result).ToString("#,##0");
         }
     }
 }

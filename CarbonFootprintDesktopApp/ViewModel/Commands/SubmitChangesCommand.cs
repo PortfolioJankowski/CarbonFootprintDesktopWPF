@@ -28,20 +28,21 @@ namespace CarbonFootprintDesktopApp.ViewModel.Commands
 
         public void Execute(object? parameter)
         {
-            HelperDB.Update(VM.SelectedCalculation, new Model.Calculation
+            var calculation = HelperDB.Read<Calculation>().Where(c => c.Id == VM.Id).First();
+            if (calculation != null)
             {
-                Id = VM.SelectedCalculation.Id,
-                Category = VM.SelectedCalculation.Category,
-                Location = VM.SelectedCalculation.Location,
-                Method = VM.SelectedCalculation.Method,
-                Result = VM.SelectedCalculation.Result,
-                Scope = VM.SelectedCalculation.Scope,
-                Sector = VM.SelectedCalculation.Sector,
-                Source = VM.SelectedCalculation.Source,
-                Unit = VM.SelectedCalculation.Unit,
-                Usage = VM.SelectedCalculation.Usage,
-                Year = VM.SelectedCalculation.Year, 
-            });
+                HelperDB.Update(HelperDB.Read<Calculation>().Where(c => c.Id == VM.Id).First(), new Emission
+                {
+                    Sector = VM.Sector,
+                    Location = VM.Location,
+                    Source = VM.Source,
+                    Unit = VM.Unit,
+                    Usage = VM.Usage,
+                    Year = VM.Year,
+                    Additional = "0"
+                });
+            }
+            
         }
     }
 }

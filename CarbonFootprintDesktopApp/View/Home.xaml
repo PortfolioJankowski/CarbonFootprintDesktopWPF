@@ -75,7 +75,7 @@
         </TextBox>
         <ListView Name="calculationGrid"  ItemsSource="{Binding CalculationView,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
                     Margin="20,157,20,100" Grid.ColumnSpan="2"
-                    SelectedValue="{Binding SelectedCalculation, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedValue="{Binding SelectedCalculation, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                     >
             <ListView.View>
                 <GridView >
@@ -174,8 +174,7 @@
                     DockPanel.Dock="Left"
                     VerticalAlignment="Bottom"
                     Margin="300,0,0,14"
-                    Foreground="#DBDBDB"
                     FontWeight="Bold"
-                    Background="PaleVioletRed" Grid.Column="1" HorizontalAlignment="Left"/>
+                    Grid.Column="1" HorizontalAlignment="Left"/>
     </Grid>
 </UserControl>

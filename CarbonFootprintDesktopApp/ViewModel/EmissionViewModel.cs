@@ -101,7 +101,7 @@ namespace CarbonFootprintDesktopApp.ViewModel
             { 
                 selectedSource = value;
                 OnPropertyChanged("SelectedSource");
-                Units = HelperDB.GetEmissions()
+                Units = HelperDB.Read<Factor>()
                          .Where(e => e.Source == selectedSource)
                          .Select(e => e.Unit)
                          .Distinct()
@@ -135,8 +135,8 @@ namespace CarbonFootprintDesktopApp.ViewModel
         public EmissionViewModel()
         {
             AddEmissionCommand = new AddEmissionCommand(this);
-            Sources = HelperDB.GetEmissions().Select(e => e.Source).Distinct().ToList();
-            Years = HelperDB.GetEmissions().Select(e => e.Year).Distinct().ToList();
+            Sources = HelperDB.Read<Factor>().Select(e => e.Source).Distinct().ToList();
+            Years = HelperDB.Read<Factor>().Select(e => e.Year).Distinct().ToList();
             Units = new List<string>();
             isUnitEnabled = false;
         }

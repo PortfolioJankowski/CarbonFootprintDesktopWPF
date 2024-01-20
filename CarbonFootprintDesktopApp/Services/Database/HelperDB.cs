@@ -21,33 +21,6 @@ namespace CarbonFootprintDesktopApp.Database
 {
     public class HelperDB
     {
-        private static char additional1;
-
-        //TODO generyczny insert/update/delete/read/
-
-        public static double GetResult()
-        {
-            try
-            {
-                using (var cnn = new SQLite.SQLiteConnection(App.databasePath))
-                {
-                    string sqlQuery = $@"SELECT SUM(E.Usage* F.Value) as Result
-                                            FROM Emissions E
-                                            JOIN Factors F
-                                            ON E.Year = F.Year  AND E.[Emission Source] = F.Source  AND E.Additional = F.Additional AND F.Unit = E.Unit
-                                            WHERE F.Method IN ('Market', 'General')"
-                                            ;
-                    var result = cnn.ExecuteScalar<double?>(sqlQuery);
-                    return (double)result;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-                return 0;
-            }
-        }
-
         public static bool InsertEmission<T>(T item) where T : Emission
         {
             bool result = false;      
@@ -78,7 +51,6 @@ namespace CarbonFootprintDesktopApp.Database
                         Method = factor.Method
                     });
                 }
-
                 //tworzę drugą kalkulację dla location
                 if (item.Source == "Purchased grid electricity")
                 {
@@ -105,42 +77,14 @@ namespace CarbonFootprintDesktopApp.Database
             return result;
         }
 
-        public static bool Update<T>(T item, Calculation calc) where T : Calculation
+        public static bool Update(Calculation item, Emission emission)
         {
-            Delete(calc);
-            InsertEmission(new Emission() { 
-                Year = item.Year,
-                Sector = item.Sector,
-                Additional = "0",
-                Location = item.Location,
-                Source = item.Source,
-                Unit = item.Unit,
-                Usage = item.Usage
-            });
+            //usuwam selected calculation
+            DeleteEmission(item);
+            //dodaje nową emisję -> utworzoną z kalkulacji
+            InsertEmission(emission);
             return true;
         }
-
-        public static bool Delete<T>(T item) where T : Calculation
-        {
-            bool result = false;
-            using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(App.databasePath))
-            {
-                //usuwam kalkulacje
-                int rows = conn.Delete(item);
-                if (rows > 0) result = true;
-                string additional = "0";
-                //usuwam emisje związaną z kalkulacją
-                string deleteSql = $"DELETE FROM Emissions WHERE Id = (Select Id FROM Emissions WHERE Year = '{item.Year}' AND [Emission Source] = '{item.Source}' AND Unit = '{item.Unit}' AND Sector = '{item.Sector}' AND Location = '{item.Location}' AND Usage = '{item.Usage}' AND Additional = {additional} Limit 1)";
-                conn.Execute(deleteSql);
-
-                if (item.Source == "Purchased grid electricity")
-                {
-                    string deleteLocation = $"DELETE FROM Emissions WHERE Id = (Select Id FROM Emissions WHERE Year = '{item.Year}' AND [Emission Source] = '{item.Source}' AND Unit = '{item.Unit}' AND Sector = '{item.Sector}' AND Location = '{item.Location}' AND Usage = '{item.Usage}' AND Additional = '{item.Location}' Limit 1)";
-                }
-            }
-            return result;
-        }
-
         public static List<T> Read<T>() where T : new()
         {
             List<T> items;
@@ -150,7 +94,6 @@ namespace CarbonFootprintDesktopApp.Database
             }
             return items;
         }
-
         public static double GetPieChartData(string column)
         {
             try {
@@ -174,18 +117,6 @@ namespace CarbonFootprintDesktopApp.Database
                 return 0;
             }
         }
-
-
-        public static List<Factor> GetEmissions()
-        {
-            using (var cnn = new SQLite.SQLiteConnection(App.databasePath))
-            {
-                string sql = $@"SELECT * FROM Factors";
-                List<Factor> result = cnn.Query<Factor>(sql).ToList();
-                return result;
-            }
-
-        }
         //na gridzie zaznaczam kalkulacje a musze usunąć emisje
         public static void DeleteEmission(Calculation calc)
         {       
@@ -193,10 +124,22 @@ namespace CarbonFootprintDesktopApp.Database
             { 
                 using (var cnn = new SQLite.SQLiteConnection(App.databasePath))
                 {
+                    //usuwam kalkulację, a jeżeli jest to energia to usuwam też location
+                    if (calc.Source != "Purchased grid electricity")
+                    {
+                        cnn.Delete(calc);
+                    }
+                    else
+                    {
+                        cnn.Delete(calc);
+                        string locationSql = $@"DELETE FROM Calculation
+                                               WHERE Year = '{calc.Year}' and Source = '{calc.Source}' and Unit = '{calc.Unit}' and Location = '{calc.Location}' and Usage = '{calc.Usage}' and Sector = '{calc.Sector}' and Method = 'Location' ";
+                        cnn.Execute(locationSql);
+                    }
+
                     string sql = $@"DELETE FROM Emissions
                                 WHERE Year = '{calc.Year}' and Additional = '0' and Sector = '{calc.Sector}' and [Emission Source] = '{calc.Source}' and Unit = '{calc.Unit}' and Location = '{calc.Location}' and Usage = '{calc.Usage}';";
                     cnn.Execute(sql);
-
                     if (calc.Source == "Purchased grid electricity")
                     {
                         string additional2 = calc.Location;
@@ -210,8 +153,6 @@ namespace CarbonFootprintDesktopApp.Database
             {
                 Console.WriteLine(ex.Message);
             }
-        }
-
-        
+        } 
     }
 }

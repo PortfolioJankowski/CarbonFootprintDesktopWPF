@@ -18,6 +18,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +32,6 @@ namespace CarbonFootprintDesktopApp.ViewModel
     public class HomeVM : Utilities.ViewModelBase
     {
         private int year;
-
         public int Year
         {
             get { return year; }
@@ -45,7 +45,6 @@ namespace CarbonFootprintDesktopApp.ViewModel
         }
 
         private string source;
-
         public string Source
         {
             get { return source; }
@@ -63,9 +62,7 @@ namespace CarbonFootprintDesktopApp.ViewModel
                 OnPropertyChanged("IsCloseVisible");
             }
         }
-
         private string location;
-
         public string Location
         {
             get { return location; }
@@ -79,7 +76,6 @@ namespace CarbonFootprintDesktopApp.ViewModel
             }
         }
         private string sector;
-
         public string Sector
         {
             get { return sector; }
@@ -92,7 +88,6 @@ namespace CarbonFootprintDesktopApp.ViewModel
             }
         }
         private string unit;
-
         public string Unit
         {
             get { return unit; }
@@ -105,7 +100,6 @@ namespace CarbonFootprintDesktopApp.ViewModel
             }
         }
         private double usage;
-
         public double Usage
         {
             get { return usage; }
@@ -117,7 +111,17 @@ namespace CarbonFootprintDesktopApp.ViewModel
                 OnPropertyChanged("IsCloseVisible");
             }
         }
+        private int id;
 
+        public int Id
+        {
+            get { return id; }
+            set 
+            {
+                id = value;
+                OnPropertyChanged("Id");
+            }
+        }
 
 
         //łączny ślad węglowy
@@ -139,27 +143,32 @@ namespace CarbonFootprintDesktopApp.ViewModel
             set
             {
                 selectedCalculation = value;
-                Year = SelectedCalculation.Year;
-                Location = SelectedCalculation.Location;
-                Sector = SelectedCalculation.Sector;
-                Usage = SelectedCalculation.Usage;
-                Unit = SelectedCalculation.Unit;
-                Source = SelectedCalculation.Source;
-                OnPropertyChanged("Year");
-                OnPropertyChanged("Location");
-                OnPropertyChanged("Sector");
-                OnPropertyChanged("Usage");
-                OnPropertyChanged("Unit");
-                OnPropertyChanged("Source");
-                Units = HelperDB.Read<Factor>()
-                        .Where(c => c.Source == Source)
-                        .Select(c => c.Unit)
-                        .Distinct()
-                        .ToList();
                 if (SelectedCalculation != null)
                 {
+                    //jeżeli kalkulacja została wybrana to przypisuje jej właściwości
+                    Year = SelectedCalculation.Year;
+                    Location = SelectedCalculation.Location;
+                    Sector = SelectedCalculation.Sector;
+                    Usage = SelectedCalculation.Usage;
+                    Unit = SelectedCalculation.Unit;
+                    Source = SelectedCalculation.Source;
+                    Id = SelectedCalculation.Id;
+                    OnPropertyChanged("Year");
+                    OnPropertyChanged("Location");
+                    OnPropertyChanged("Sector");
+                    OnPropertyChanged("Usage");
+                    OnPropertyChanged("Unit");
+                    OnPropertyChanged("Source");
+                    OnPropertyChanged("Id");
+                    Units = HelperDB.Read<Factor>()
+                            .Where(c => c.Source == Source)
+                            .Select(c => c.Unit)
+                            .Distinct()
+                            .ToList();
+
                     if (Year != null && Sector != null && Location != null && Unit != null && Usage != null && Source != null)
                     {
+                        //jeżeli kalkulacja jest wybrana i jej właściwości są uzupełnione to przycisk zamykania jest aktywny
                         IsCloseVisible = Visibility.Visible;
                     }
                     else
@@ -175,7 +184,6 @@ namespace CarbonFootprintDesktopApp.ViewModel
                 OnPropertyChanged("IsCloseVisible");
                 OnPropertyChanged("SelectedCalculation");
                 OnPropertyChanged("Units");
-                  
             }
         }
         private List<string> units;
@@ -312,11 +320,20 @@ namespace CarbonFootprintDesktopApp.ViewModel
                                 {
                                     //wywołuje import
                                     ImportEmissionData(xlWorksheet);
+                                    xlWorkbook.Close(false);
+                                    Marshal.ReleaseComObject(xlWorkbook);
+                                    xlApp.Quit();
+                                    Marshal.ReleaseComObject(xlApp);
                                     Calculations.Clear();
                                     Calculations = new ObservableCollection<Calculation>(HelperDB.Read<Calculation>().Where(c => c.Method != "Location"));
                                     TotalResult = Calculations.Sum(e => e.Result).ToString("#,##0");
                                     SuccesMsgBox succes = new();
                                     succes.ShowDialog();
+                                }
+                                else
+                                {
+                                    FailMsgBox fail = new();
+                                    fail.ShowDialog();
                                 }
                     }
                     catch (Exception ex)
