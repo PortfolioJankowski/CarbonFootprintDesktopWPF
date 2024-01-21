@@ -43,7 +43,7 @@ namespace CarbonFootprintDesktopApp.ViewModel.Commands
             {
                 HelperDB.DeleteEmission(VM.SelectedCalculation);
                 VM.Calculations.Clear();
-                VM.Calculations = new System.Collections.ObjectModel.ObservableCollection<Model.Calculation>(HelperDB.Read<Calculation>().Where(c => c.Method != "Location"));
+                VM.Calculations = new ObservableCollection<Calculation>(HelperDB.Read<Calculation>().Where(e => e.Method != "Location"));
                 VM.TotalResult = VM.Calculations.Sum(e => e.Result).ToString("#,##0");
                 SuccesMsgBox succes = new();
                 succes.ShowDialog();

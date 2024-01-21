@@ -44,7 +44,7 @@ namespace CarbonFootprintDesktopApp.ViewModel.Commands
             ChangeEmissionView changeEmissionView = new ChangeEmissionView(VM);
             changeEmissionView.ShowDialog();
             VM.Calculations.Clear();
-            VM.Calculations = new ObservableCollection<Calculation>(HelperDB.Read<Calculation>().Where(c => c.Method != "Location"));
+            VM.Calculations = new ObservableCollection<Calculation>(HelperDB.Read<Calculation>().Where(e => e.Method != "Location"));
             VM.TotalResult = VM.Calculations.Sum(e => e.Result).ToString("#,##0");
         }
     }

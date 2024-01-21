@@ -3,6 +3,8 @@ using CarbonFootprintDesktopApp.Model;
 using CarbonFootprintDesktopApp.Utilities;
 using CarbonFootprintDesktopApp.View;
 using CarbonFootprintDesktopApp.ViewModel.Commands;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Ganss.Excel;
 using HandyControl.Controls;
 using HandyControl.Tools.Extension;
@@ -214,6 +216,17 @@ namespace CarbonFootprintDesktopApp.ViewModel
                     OnPropertyChanged(nameof(TotalResult));
 
                 }
+                //jeżeli mam kalkulacje to pokazuje przycisk do eksportu
+                if (calculations.Count > 0)
+                {
+                    IsCalculation = Visibility.Visible;
+                    OnPropertyChanged("IsCalculation");
+                }
+                else
+                {
+                    IsCalculation = Visibility.Hidden;
+                    OnPropertyChanged("IsCalculation");
+                }
             }
         }
         //tekst, który wpisuje w pole filtru
@@ -246,6 +259,7 @@ namespace CarbonFootprintDesktopApp.ViewModel
         public ICommand DeleteEmissionCommand { get; set; }
         public ICommand ImportEmissionCommand { get; set; }
         public ICommand SubmitChangesCommand { get; set; }
+        public ICommand ExportCommand { get; set; }
 
         private Visibility isCloseVisible;
 
@@ -255,6 +269,17 @@ namespace CarbonFootprintDesktopApp.ViewModel
             set
             {
                 isCloseVisible = value;
+            }
+        }
+        private Visibility isCalculation;
+
+        public Visibility IsCalculation
+        {
+            get { return isCalculation; }
+            set 
+            {
+                isCalculation = value;
+                OnPropertyChanged("IsCalculation");
             }
         }
 
@@ -270,6 +295,7 @@ namespace CarbonFootprintDesktopApp.ViewModel
             ImportEmissionCommand = new ImportEmissionCommand(this);
             ChangeEmissionCommand = new ChangeEmissionCommand(this);
             SubmitChangesCommand = new SubmitChangesCommand(this);
+            ExportCommand = new ExportCommand(this);
             Units = new List<string>();
             IsCloseVisible = Visibility.Visible;
         }

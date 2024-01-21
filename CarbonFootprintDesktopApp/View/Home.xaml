@@ -169,12 +169,14 @@
                        FontFamily="Century Gothic"
                        Margin="0,560,0,0"/>
         </DockPanel>
-        <Button Content="Export"
+        <Button Content="Report"
                     Width="75"
                     DockPanel.Dock="Left"
                     VerticalAlignment="Bottom"
                     Margin="300,0,0,14"
                     FontWeight="Bold"
-                    Grid.Column="1" HorizontalAlignment="Left"/>
+                    Grid.Column="1" HorizontalAlignment="Left"
+                    Command="{Binding ExportCommand}"
+                    Visibility="{Binding IsCalculation}"/>
     </Grid>
 </UserControl>
