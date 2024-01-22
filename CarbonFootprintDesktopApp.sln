@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonFootprintDesktopApp", "CarbonFootprintDesktopApp\CarbonFootprintDesktopApp.csproj", "{49AB830F-F391-456E-B0A5-3993D82EC1CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarbonFootprintDesktopApp", "CarbonFootprintDesktopApp\CarbonFootprintDesktopApp.csproj", "{49AB830F-F391-456E-B0A5-3993D82EC1CE}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CarbonFootprintCalculatorSetup", "CarbonFootprintCalculatorSetup\CarbonFootprintCalculatorSetup.vdproj", "{93EBAADC-CAAA-4C15-A35E-018C8789B9CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,8 @@ Global
 		{49AB830F-F391-456E-B0A5-3993D82EC1CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49AB830F-F391-456E-B0A5-3993D82EC1CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49AB830F-F391-456E-B0A5-3993D82EC1CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93EBAADC-CAAA-4C15-A35E-018C8789B9CD}.Debug|Any CPU.ActiveCfg = Debug
+		{93EBAADC-CAAA-4C15-A35E-018C8789B9CD}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

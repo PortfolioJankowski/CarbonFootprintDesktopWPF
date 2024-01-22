@@ -17,26 +17,24 @@ namespace CarbonFootprintDesktopApp.ViewModel
         public MethodsVM()
         {
             Calculations = new ObservableCollection<Calculation>(HelperDB.Read<Calculation>());
-            SeriesCollection = new SeriesCollection
-            {
-                new ColumnSeries
-                {
-                    Title = "Location",
-                    Values = new ChartValues<double> {LocationResult},
-                    ColumnPadding = 20,
-                    Width = 150
-                }
-            };
+            SeriesCollection = new SeriesCollection();
 
-            //adding series will update and animate the chart automatically
+            SeriesCollection.Add(new ColumnSeries
+            {
+                Title = "Location",
+                Values = new ChartValues<double> { Math.Round(LocationResult, 2) },
+                ColumnPadding = 40,
+                MaxColumnWidth = 80
+            });
+
             SeriesCollection.Add(new ColumnSeries
             {
                 Title = "Market",
-                Values = new ChartValues<double> {MarketResult},
-                ColumnPadding = 20,
-                Width = 150
+                Values = new ChartValues<double> { Math.Round(MarketResult,2) },
+                ColumnPadding = 40,
+                MaxColumnWidth = 80
             });
-            Formatter = value => value.ToString("N");
+            Labels = new[] { "Methods" };
         }
         private ObservableCollection<Calculation> calculations;
         public ObservableCollection<Calculation> Calculations

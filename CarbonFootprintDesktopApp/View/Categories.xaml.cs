@@ -23,6 +23,8 @@ namespace CarbonFootprintDesktopApp.View
         public Categories()
         {
             InitializeComponent();
+            Chart.AxisX[0].Separator.StrokeThickness = 0;
+            Chart.AxisY[0].Separator.StrokeThickness = 0;
         }
     }
 }

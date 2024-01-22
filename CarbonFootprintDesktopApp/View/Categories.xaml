@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CarbonFootprintDesktopApp.View"
              xmlns:vm="clr-namespace:CarbonFootprintDesktopApp.ViewModel"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="600" 
              d:DesignWidth="622"
@@ -22,6 +23,99 @@
 
     <!--MainGrid-->
     <Grid>
+        <TextBlock FontSize="14" FontFamily="Century Gothic" Foreground="#DBDBDB" Margin="65,65,0,0">
+                <Run Text="The following chart illustrates emission ranges categorized by emission types." />
+                <LineBreak />
+                
+        </TextBlock>
+        
+
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="0" Orientation="Horizontal" Margin="68,100,0,0">
+            <!--TOP-->
+            <StackPanel Margin="0,15" Grid.Column="0" Width="270">
+                <TextBlock 
+                       Text="Most intensive category"
+                       FontSize="18"
+                       FontFamily="Century Gothic"
+                       FontWeight="Bold"
+                       Foreground="#DBDBDB"/>
+                <!--Binding with VM-->
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Design/Images/top_icon.png"
+                           Height="30"
+                           Width="20" />
+                    <TextBlock Margin="10,9,0,0"
+                               Text="{Binding WorstCategory, UpdateSourceTrigger=PropertyChanged}"
+                               Foreground="PaleVioletRed"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               FontFamily="Century Gothic"/>
+                    <TextBlock Margin="5,10,0,0"
+                               Text="{Binding WorstCategoryResult, UpdateSourceTrigger=PropertyChanged,  StringFormat=# ##0}"
+                               FontFamily="Century Gothic"
+                               Foreground="PaleVioletRed"
+                               FontSize="18"
+                               Height="30"/>
+                </StackPanel>
+                <TextBlock Margin="5,1"
+                               Text="displayed in tCO2e unit"
+                               FontSize="12"
+                               FontStyle="Italic"
+                               FontFamily="Century Gothic"
+                               Foreground="#DBDBDB"/>
+            </StackPanel>
+            <!--BOTTOM-->
+            <StackPanel Margin="0,15" Grid.Column="1" Width="270">
+                <TextBlock 
+           Text="Least intensive category"
+           FontSize="18"
+           FontFamily="Century Gothic"
+           FontWeight="Bold"
+           Foreground="#DBDBDB"/>
+                <!--Binding with VM-->
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Design/Images/down_icon.png"
+                           Height="30"
+                           Width="20" />
+                    <TextBlock Text="{Binding BestCategory, UpdateSourceTrigger=PropertyChanged}"
+                               Foreground="ForestGreen"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               FontFamily="Century Gothic"
+                               Margin="10,9,0,0"/>
+                    <TextBlock Margin="0,9,0,0"
+                       Text="{Binding BestCategoryResult, UpdateSourceTrigger=PropertyChanged,  StringFormat=# ##0}"
+                       FontFamily="Century Gothic"
+                       Foreground="ForestGreen"
+                       FontSize="18"
+                       Height="30"/>
+                </StackPanel>
+                <TextBlock Margin="5,1,0,0"
+                   Text="displayed in tCO2e unit"
+                   FontSize="12"
+                   FontStyle="Italic"
+                   FontFamily="Century Gothic"
+                   Foreground="#DBDBDB"/>
+            </StackPanel>
+        </StackPanel>
+        <lvc:CartesianChart x:Name="Chart" Series="{Binding SeriesCollection}" LegendLocation="Bottom" Height="380" Margin="20,200,20,0">
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Title=""
+                          Labels="{Binding Labels}" 
+                          Separator="{x:Static lvc:DefaultAxes.CleanSeparator}" />
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Title=""></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.ChartLegend>
+                <lvc:DefaultLegend BulletSize="6" Foreground="White" Focusable="True"></lvc:DefaultLegend>
+            </lvc:CartesianChart.ChartLegend>
+            <lvc:CartesianChart.DataTooltip>
+                <lvc:DefaultTooltip BulletSize="4" Foreground="White" Background="#212529" SelectionMode="OnlySender"></lvc:DefaultTooltip>
+            </lvc:CartesianChart.DataTooltip>
+        </lvc:CartesianChart>
+
+
         <Image Source="/Design/Images/veritas_logo.png"
                Height="80"
                Width="60"

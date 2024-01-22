@@ -47,7 +47,7 @@ namespace CarbonFootprintDesktopApp.Services
         public void Export(string filePath)
         {
             //pobieram sobie ścieżke templatki
-            string templatePath = Path.GetFullPath(Path.Combine(System.IO.Path.Combine(new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().FullName).DirectoryName, ""), @"..\..\..\Services\ExcelTemplate\Template.xlsm"));
+            string templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template.xlsm");
             //kopiuje templatke na pulpit
             File.Copy(templatePath, filePath, true);
 

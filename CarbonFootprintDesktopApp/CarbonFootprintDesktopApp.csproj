@@ -5,7 +5,7 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>4288597_board_diagram_presentation_report_stats_icon.ico</ApplicationIcon>
+    <ApplicationIcon>2824440_calculator_math_school_tool_icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +13,7 @@
     <None Remove="Design\Images\back.png" />
     <None Remove="Design\Images\categories_icon.png" />
     <None Remove="Design\Images\categories_page.png" />
+    <None Remove="Design\Images\down_icon.png" />
     <None Remove="Design\Images\grid.png" />
     <None Remove="Design\Images\home.png" />
     <None Remove="Design\Images\home_page.png" />
@@ -23,6 +24,7 @@
     <None Remove="Design\Images\scopes.png" />
     <None Remove="Design\Images\scopes_page.png" />
     <None Remove="Design\Images\submit.png" />
+    <None Remove="Design\Images\top_icon.png" />
     <None Remove="Design\Images\veritas_logo.png" />
     <None Remove="Services\ExcelTemplate\Template.xlsm" />
   </ItemGroup>
@@ -40,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="4288597_board_diagram_presentation_report_stats_icon.ico" />
+    <Content Include="2824440_calculator_math_school_tool_icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +50,7 @@
     <Resource Include="Design\Images\back.png" />
     <Resource Include="Design\Images\categories_icon.png" />
     <Resource Include="Design\Images\categories_page.png" />
+    <Resource Include="Design\Images\down_icon.png" />
     <Resource Include="Design\Images\home.png" />
     <Resource Include="Design\Images\home_page.png" />
     <Resource Include="Design\Images\methods_icon.png" />
@@ -56,6 +59,7 @@
     <Resource Include="Design\Images\scope.png" />
     <Resource Include="Design\Images\scopes.png" />
     <Resource Include="Design\Images\submit.png" />
+    <Resource Include="Design\Images\top_icon.png" />
     <Resource Include="Design\Images\veritas_logo.png" />
   </ItemGroup>
 
