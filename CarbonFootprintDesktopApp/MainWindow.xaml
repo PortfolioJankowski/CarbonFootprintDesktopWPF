@@ -53,11 +53,10 @@
                                    Visibility="Visible" />
                         </Grid> 
                     </Menu:Btn>
-
+                    <!--Scopes-->
                     <Menu:Btn Style="{StaticResource BtnStyle}"
                               Command="{Binding ScopesCommnad}"
                               IsChecked="False">
-
                         <Grid>
                             <TextBlock Text="Scopes"
                                        Style="{StaticResource Text_Style}" />
@@ -66,10 +65,42 @@
                                      Height="35"
                                      Width="35"
                                      Style="{StaticResource Image_Style}"
-                                     Visibility="Visible"
-                                     />
+                                     Visibility="Visible"/>
                         </Grid>
-                        </Menu:Btn>
+                    </Menu:Btn>
+
+                    <!--Methods-->
+                    <Menu:Btn Style="{StaticResource BtnStyle}"
+                              Command="{Binding MethodsCommand}"
+                              IsChecked="False">
+                        <Grid>
+                            <TextBlock Text="Methods"
+                                       Style="{StaticResource Text_Style}"/>
+                            <Image Source="/Design/Images/methods_icon.png"
+                                   Stretch="Uniform"
+                                   Height="35"
+                                   Width="35"
+                                   Style="{StaticResource Image_Style}"
+                                   Visibility="Visible" />
+                        </Grid>
+                    </Menu:Btn>
+
+                    <!--Categories-->
+                    <Menu:Btn Style="{StaticResource BtnStyle}"
+                              Command="{Binding CategoriesCommand}"
+                              IsChecked="False">         
+                        <Grid>
+                            <TextBlock Text="Categories"
+                                       Style="{StaticResource Text_Style}"/>
+                            <Image Source="/Design/Images/categories_icon.png"
+                                   Stretch="Uniform"
+                                   Height="35"
+                                   Width="35"
+                                   Style="{StaticResource Image_Style}"
+                                   Visibility="Visible" />
+                        </Grid>
+                    </Menu:Btn>
+
 
                 </StackPanel>
                 

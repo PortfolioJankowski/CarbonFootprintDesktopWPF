@@ -47,7 +47,7 @@ namespace CarbonFootprintDesktopApp.Services
         public void Export(string filePath)
         {
             //pobieram sobie ścieżke templatki
-            string templatePath = Path.GetFullPath(Path.Combine(System.IO.Path.Combine(new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().FullName).DirectoryName, ""), @"..\..\..\Services\ExcelTemplate\Template.xlsx"));
+            string templatePath = Path.GetFullPath(Path.Combine(System.IO.Path.Combine(new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().FullName).DirectoryName, ""), @"..\..\..\Services\ExcelTemplate\Template.xlsm"));
             //kopiuje templatke na pulpit
             File.Copy(templatePath, filePath, true);
 
@@ -71,7 +71,7 @@ namespace CarbonFootprintDesktopApp.Services
                         //wrzucam do skopiowanego pliku kalkulacje
                         Spire.Xls.Workbook book = new Spire.Xls.Workbook();
                         book.LoadFromFile(filePath);
-                        Spire.Xls.Worksheet sheet = book.Worksheets[0];
+                        Spire.Xls.Worksheet sheet = book.Worksheets[1];
                         sheet.InsertDataTable(dt.Tables[0], true, 1, 1);
                         book.Save();
 

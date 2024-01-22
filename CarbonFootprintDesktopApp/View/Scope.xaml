@@ -85,15 +85,15 @@
 
 
         <lvc:PieChart Name="Chart" Series="{Binding SeriesCollection}" 
-                      LegendLocation="Right" InnerRadius="80" Margin="75,300,24,15" Foreground="WhiteSmoke" ZoomingSpeed="0.6">
+                      LegendLocation="Right" InnerRadius="80" Margin="75,281,7,10" Foreground="#DBDBDB" ZoomingSpeed="0.6" Zoom="X">
             <lvc:PieChart.DataContext>
                 <vm:DoughnutChartViewModel/>
             </lvc:PieChart.DataContext>
             <lvc:PieChart.ChartLegend>
-                <lvc:DefaultLegend BulletSize="4"></lvc:DefaultLegend>
+                <lvc:DefaultLegend BulletSize="6" Focusable="True"></lvc:DefaultLegend>
             </lvc:PieChart.ChartLegend>
             <lvc:PieChart.DataTooltip>
-                <lvc:DefaultTooltip BulletSize="4"></lvc:DefaultTooltip>
+                <lvc:DefaultTooltip BulletSize="4" Background="#212529" SelectionMode="OnlySender"></lvc:DefaultTooltip>
             </lvc:PieChart.DataTooltip>
         </lvc:PieChart>
     </Grid>

@@ -16,13 +16,16 @@ using System.Windows.Shapes;
 namespace CarbonFootprintDesktopApp.View
 {
     /// <summary>
-    /// Logika interakcji dla klasy Locations.xaml
+    /// Logika interakcji dla klasy Methods.xaml
     /// </summary>
-    public partial class Locations : UserControl
+    public partial class Methods : UserControl
     {
-        public Locations()
+        public Methods()
         {
             InitializeComponent();
+            Chart.AxisX[0].Separator.StrokeThickness = 0;
+            Chart.AxisY[0].Separator.StrokeThickness = 0;
+      
         }
     }
 }

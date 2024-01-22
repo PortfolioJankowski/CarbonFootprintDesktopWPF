@@ -14,17 +14,9 @@
     <DataTemplate DataType="{x:Type vm:CategoriesVM}">
         <view:Categories/>
     </DataTemplate>
-
-    <DataTemplate DataType="{x:Type vm:SourcesVM}">
-        <view:Sources/>
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type vm:LocationsVM}">
-        <view:Locations/>
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type vm:FactorsVM}">
-        <view:Factors/>
+    
+    <DataTemplate DataType="{x:Type vm:MethodsVM}">
+        <view:Methods/>
     </DataTemplate>
 
 

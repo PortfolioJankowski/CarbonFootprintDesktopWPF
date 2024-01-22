@@ -23,16 +23,14 @@ namespace CarbonFootprintDesktopApp.ViewModel
         public ICommand ScopesCommnad { get; set; }
         public ICommand CategoriesCommand { get; set; }
         public ICommand SourcesCommand { get; set; }
-        public ICommand LocationsCommand { get; set; }
-        public ICommand FactorsCommand { get; set; }
-
+        public ICommand MethodsCommand { get; set; }
+       
         //to będzie zmieniało widok tworzac nowe CurrentView, które jest obserwowane przez OnPropChanged
         private void Home(object obj) => CurrentView = new HomeVM();
         private void Scopes(object obj) => CurrentView = new ScopesVM();
         private void Categories(object obj) => CurrentView = new CategoriesVM();
-        private void Sources(object obj) => CurrentView = new SourcesVM();
-        private void Locations(object obj) => CurrentView = new LocationsVM();
-        private void Factors(object obj) => CurrentView = new FactorsVM();
+        private void Methods(object obj) => CurrentView = new MethodsVM();
+ 
 
         public NavigationVM()
         {
@@ -42,9 +40,7 @@ namespace CarbonFootprintDesktopApp.ViewModel
             HomeCommand = new RelayCommand(Home);
             ScopesCommnad = new RelayCommand(Scopes);
             CategoriesCommand = new RelayCommand(Categories);
-            SourcesCommand = new RelayCommand(Sources);
-            LocationsCommand = new RelayCommand(Locations);
-            FactorsCommand = new RelayCommand(Factors);
+            MethodsCommand = new RelayCommand(Methods);
 
             //Strona startowa
             CurrentView = new HomeVM();

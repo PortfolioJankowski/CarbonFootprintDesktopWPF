@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="CarbonFootprintDesktopApp.View.Methods"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CarbonFootprintDesktopApp.View"
+             xmlns:vm="clr-namespace:CarbonFootprintDesktopApp.ViewModel"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+              mc:Ignorable="d" 
+             d:DesignHeight="600" 
+             d:DesignWidth="622"
+             Style="{StaticResource Page_Style}">
+    <UserControl.DataContext>
+        <vm:MethodsVM />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <vm:HomeVM x:Key="vm"/>
+    </UserControl.Resources>
+    <UserControl.Background>
+        <ImageBrush ImageSource="/Design/Images/method_page.png"
+        Stretch="None" />
+    </UserControl.Background>
+
+    <!--MainGrid-->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.ColumnSpan="2" Margin="70,70,0,0" Text="Comparison of emissions by calculation methods."
+            FontSize="14"
+            FontFamily="Century Gothic"
+            Foreground="#DBDBDB"/>
+        <StackPanel Margin="68,100,0,0" Grid.ColumnSpan="2" Orientation="Horizontal" Grid.Row="0">
+            <StackPanel Margin="0,35" Grid.Column="0" Width="320">
+                <TextBlock 
+                       Text="Location"
+                       FontSize="18"
+                       FontFamily="Century Gothic"
+                       FontWeight="Bold"
+                       Foreground="#DBDBDB"/>
+                <!--Binding with VM-->
+                <TextBlock Margin="35,10,0,0"
+                           Text="{Binding LocationResult, UpdateSourceTrigger=PropertyChanged,  StringFormat=# ##0}"
+                           FontFamily="Century Gothic"
+                            Foreground="#DBDBDB"
+                            FontSize="18"
+                           FontWeight="Bold"/>
+                <TextBlock Margin="5,7"
+                    Text="displayed in tCO2e unit"
+                           FontSize="12"
+                           FontStyle="Italic"
+                           FontFamily="Century Gothic"
+                           Foreground="#DBDBDB"/>
+            </StackPanel>
+            <StackPanel Margin="0,35" Grid.Column="1">
+                <TextBlock 
+                   Text="Market"
+                   FontSize="18"
+                   FontFamily="Century Gothic"
+                   FontWeight="Bold"
+                   Foreground="#DBDBDB"/>
+                <!--Binding with VM-->
+                <TextBlock Margin="35,10,0,0"
+                           Text="{Binding MarketResult, UpdateSourceTrigger=PropertyChanged,  StringFormat=# ##0}"
+                            FontFamily="Century Gothic"
+                            Foreground="#DBDBDB"
+                            FontSize="18"
+                            FontWeight="Bold"/>
+                <TextBlock Margin="5,7"
+                           Text="displayed in tCO2e unit"
+                           FontSize="12"
+                           FontStyle="Italic"
+                           FontFamily="Century Gothic"
+                           Foreground="#DBDBDB"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <!--CHART-->
+        <lvc:CartesianChart x:Name="Chart" Series="{Binding SeriesCollection}" LegendLocation="Left" Grid.Row="1" Grid.ColumnSpan="2" Width="600" Height="350" Margin="0,0,20,0">
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Title="Methods" Foreground="White"></lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Title="" Foreground="White" FontWeight="Normal"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.DataTooltip>
+                <lvc:DefaultTooltip BulletSize="4" Background="#212529" Foreground="#DBDBDB" SelectionMode="OnlySender"></lvc:DefaultTooltip>
+            </lvc:CartesianChart.DataTooltip>
+            <lvc:CartesianChart.ChartLegend>
+                <lvc:DefaultLegend Foreground="#DBDBDB"/>
+            </lvc:CartesianChart.ChartLegend>
+        </lvc:CartesianChart>
+    </Grid>
+</UserControl>

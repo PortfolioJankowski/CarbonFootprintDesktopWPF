@@ -96,6 +96,7 @@ namespace CarbonFootprintDesktopApp.ViewModel
                     DataLabels = true
                 }  
             };
+            
         }  
     }
 }

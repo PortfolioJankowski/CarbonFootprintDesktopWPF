@@ -11,9 +11,13 @@
   <ItemGroup>
     <None Remove="Design\Images\add.png" />
     <None Remove="Design\Images\back.png" />
+    <None Remove="Design\Images\categories_icon.png" />
+    <None Remove="Design\Images\categories_page.png" />
     <None Remove="Design\Images\grid.png" />
     <None Remove="Design\Images\home.png" />
     <None Remove="Design\Images\home_page.png" />
+    <None Remove="Design\Images\methods_icon.png" />
+    <None Remove="Design\Images\method_page.png" />
     <None Remove="Design\Images\poweroff.png" />
     <None Remove="Design\Images\scope.png" />
     <None Remove="Design\Images\scopes.png" />
@@ -42,8 +46,12 @@
   <ItemGroup>
     <Resource Include="Design\Images\add.png" />
     <Resource Include="Design\Images\back.png" />
+    <Resource Include="Design\Images\categories_icon.png" />
+    <Resource Include="Design\Images\categories_page.png" />
     <Resource Include="Design\Images\home.png" />
     <Resource Include="Design\Images\home_page.png" />
+    <Resource Include="Design\Images\methods_icon.png" />
+    <Resource Include="Design\Images\method_page.png" />
     <Resource Include="Design\Images\poweroff.png" />
     <Resource Include="Design\Images\scope.png" />
     <Resource Include="Design\Images\scopes.png" />

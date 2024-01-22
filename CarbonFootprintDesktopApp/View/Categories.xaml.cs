@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CarbonFootprintDesktopApp.View
@@ -17,7 +18,7 @@ namespace CarbonFootprintDesktopApp.View
     /// <summary>
     /// Logika interakcji dla klasy Categories.xaml
     /// </summary>
-    public partial class Categories : Window
+    public partial class Categories : UserControl
     {
         public Categories()
         {
